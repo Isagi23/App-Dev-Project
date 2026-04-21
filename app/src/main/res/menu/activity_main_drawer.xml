@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_employees"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="Employees" />
+        <item
+            android:id="@+id/nav_record_order"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Record Order" />
+        <item
+            android:id="@+id/nav_menu_items"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Menu Items" />
+        <item
+            android:id="@+id/nav_expense_history"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Expense History" />
+        <item
+            android:id="@+id/nav_payroll_report"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="Payroll Report" />
+    </group>
+
+    <item android:title="ACCOUNT">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Log Out"
+                android:iconTint="@android:color/holo_red_light" />
+        </menu>
+    </item>
+
+</menu>

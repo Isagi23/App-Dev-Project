@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Canteen Management System</string>
+    <string name="title_employee_mgmt">Employee Management</string>
+    <string name="title_menu_mgmt">Menu Management</string>
+    <string name="title_record_order">Record Order</string>
+    <string name="title_expense_history">Expense History</string>
+    <string name="title_payroll_report">Total Expenses</string>
+    <string name="label_dashboard">Dashboard</string>
+    <string name="label_quick_actions">Quick Actions</string>
+    <string name="label_total_employees">Total Employees</string>
+    <string name="label_orders_today">Orders Today</string>
+    <string name="label_month_expense">Month Expense</string>
+    <string name="label_active_users">Active Users</string>
+    <string name="cycle_active">%1$s cycle active</string>
+    <string name="greeting_morning">Good Morning</string>
+    <string name="greeting_afternoon">Good Afternoon</string>
+    <string name="greeting_evening">Good Evening</string>
+    <string name="no_notifications">No new notifications</string>
+    <string name="logging_out">Logging out...</string>
+
+    <!-- Quick Action Strings -->
+    <string name="action_record_order">Record Order</string>
+    <string name="action_record_order_desc">Log a new food purchase</string>
+    <string name="action_manage_employees">Manage Employees</string>
+    <string name="action_manage_employees_desc">Add, edit or view workers</string>
+    <string name="action_menu_items">Menu Items</string>
+    <string name="action_menu_items_desc">Food items and prices</string>
+    <string name="action_expense_history">Expense History</string>
+    <string name="action_expense_history_desc">View past canteen expenses</string>
+    <string name="action_payroll_report">Payroll Report</string>
+    <string name="action_payroll_report_desc">Summary of employee orders</string>
+</resources>
