@@ -21,6 +21,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -103,8 +107,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        });
     }
 
     @Override
@@ -127,12 +133,41 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        startMainActivity();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (task.getResult().getAdditionalUserInfo() != null && 
+                            task.getResult().getAdditionalUserInfo().isNewUser()) {
+                            saveGoogleUserToFirestore(user);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            startMainActivity();
+                        }
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
+                });
+    }
+
+    private void saveGoogleUserToFirestore(FirebaseUser firebaseUser) {
+        if (firebaseUser == null) return;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> user = new HashMap<>();
+        user.put("fullName", firebaseUser.getDisplayName());
+        user.put("email", firebaseUser.getEmail());
+        user.put("role", "admin");
+        user.put("createdAt", System.currentTimeMillis());
+
+        db.collection("users").document(firebaseUser.getUid()).set(user)
+                .addOnSuccessListener(aVoid -> {
+                    progressBar.setVisibility(View.GONE);
+                    startMainActivity();
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(LoginActivity.this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    startMainActivity();
                 });
     }
 
