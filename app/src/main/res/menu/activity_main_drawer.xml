@@ -6,27 +6,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
-            android:icon="@android:drawable/ic_menu_today"
+            android:icon="@drawable/ic_calendar"
             android:title="Dashboard" />
         <item
             android:id="@+id/nav_employees"
-            android:icon="@android:drawable/ic_menu_myplaces"
+            android:icon="@drawable/ic_person"
             android:title="Employees" />
         <item
             android:id="@+id/nav_record_order"
-            android:icon="@android:drawable/ic_input_add"
+            android:icon="@drawable/ic_add"
             android:title="Record Order" />
         <item
             android:id="@+id/nav_menu_items"
-            android:icon="@android:drawable/ic_menu_agenda"
+            android:icon="@drawable/ic_reports"
             android:title="Menu Items" />
         <item
             android:id="@+id/nav_expense_history"
-            android:icon="@android:drawable/ic_menu_view"
+            android:icon="@drawable/ic_search"
             android:title="Expense History" />
         <item
             android:id="@+id/nav_payroll_report"
-            android:icon="@android:drawable/ic_menu_save"
+            android:icon="@drawable/ic_save"
             android:title="Payroll Report" />
     </group>
 
@@ -34,11 +34,15 @@
         <menu>
             <item
                 android:id="@+id/nav_settings"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/ic_settings"
                 android:title="Settings" />
             <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_person"
+                android:title="@string/menu_profile" />
+            <item
                 android:id="@+id/nav_logout"
-                android:icon="@android:drawable/ic_lock_power_off"
+                android:icon="@drawable/ic_logout"
                 android:title="Log Out"
                 android:iconTint="@android:color/holo_red_light" />
         </menu>

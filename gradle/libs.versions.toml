@@ -10,6 +10,7 @@ constraintlayout = "2.2.1"
 googleServices = "4.4.4"
 firebaseBom = "33.10.0"
 firebaseAuth = "23.2.0"
+playServicesAuth = "21.3.0"
 retrofit = "2.11.0"
 gson = "2.11.0"
 swiperefreshlayout = "1.1.0"
@@ -26,6 +27,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }

@@ -31,7 +31,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:src="@android:drawable/ic_menu_myplaces"
+                android:src="@drawable/ic_person"
                 app:tint="@color/blue_icon" />
         </com.google.android.material.card.MaterialCardView>
 

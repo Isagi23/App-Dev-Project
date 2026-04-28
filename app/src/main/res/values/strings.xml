@@ -17,6 +17,7 @@
     <string name="greeting_evening">Good Evening</string>
     <string name="no_notifications">No new notifications</string>
     <string name="logging_out">Logging out...</string>
+    <string name="menu_profile">Profile</string>
 
     <!-- Quick Action Strings -->
     <string name="action_record_order">Record Order</string>
@@ -27,6 +28,55 @@
     <string name="action_menu_items_desc">Food items and prices</string>
     <string name="action_expense_history">Expense History</string>
     <string name="action_expense_history_desc">View past canteen expenses</string>
-    <string name="action_payroll_report">Payroll Report</string>
-    <string name="action_payroll_report_desc">Summary of employee orders</string>
+    <string name="action_order_history">Order History</string>
+    <string name="action_order_history_desc">View past orders and expenses</string>
+    <string name="view_history">View History</string>
+    <string name="order_history_title">Order History</string>
+    <string name="filter_history">Filter History</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="no_records_found">No records found</string>
+
+    <!-- Reports Fragment -->
+    <string name="report_title">Total Expenses</string>
+    <string name="report_subtitle">Deduction summary</string>
+    <string name="report_total_employees">Total Employees: %1$d</string>
+    <string name="report_grand_total">Grand Total\nExpenses</string>
+    <string name="title_top_selling_items">Top Selling Items</string>
+    <string name="export_pdf">Export to PDF</string>
+    <string name="department_all">All</string>
+    <string name="department_field">Field</string>
+    <string name="department_packing">Packing</string>
+    <string name="department_maint">Maint.</string>
+    <string name="currency_placeholder">₱%1$.2f</string>
+    <string name="content_desc_prev">Previous Month</string>
+    <string name="content_desc_next">Next Month</string>
+    <string name="no_items_selected">No items selected</string>
+    <string name="save_order">Save Order</string>
+    <string name="select_employee">Select employee...</string>
+    <string name="menu_items_label">MENU ITEMS</string>
+
+    <!-- Google Sign-In (Replace with your actual Web Client ID from Firebase Console) -->
+    <string name="default_web_client_id">504716463207-4nquuhl73mv7083u1uatecgrmtk2154f.apps.googleusercontent.com</string>
+
+    <!-- Forgot Password Strings -->
+    <string name="title_forgot_password">Forgot Password</string>
+    <string name="desc_forgot_password">Enter your email to receive a password reset link</string>
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="hint_email">manager@canteen.com</string>
+    <string name="hint_password">••••••••</string>
+    <string name="btn_send_reset_link">Send Reset Link</string>
+    <string name="label_back_to_login">Back to Login</string>
+    <string name="label_canteen_manager">CanteenManager</string>
+
+    <!-- Register Strings -->
+    <string name="title_register">Create Account</string>
+    <string name="desc_register">Join us to manage your canteen operations</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="hint_full_name">John Doe</string>
+    <string name="btn_register">Register</string>
+    <string name="label_already_have_account">Already have an account? </string>
+    <string name="label_login">Login</string>
 </resources>

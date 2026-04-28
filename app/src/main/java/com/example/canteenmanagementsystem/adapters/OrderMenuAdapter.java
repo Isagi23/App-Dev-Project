@@ -3,32 +3,33 @@ package com.example.canteenmanagementsystem.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.canteenmanagementsystem.R;
 import com.example.canteenmanagementsystem.models.MenuItem;
-import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.button.MaterialButton;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+import java.util.Map;
 
 public class OrderMenuAdapter extends RecyclerView.Adapter<OrderMenuAdapter.ViewHolder> {
 
     private List<MenuItem> menuItems;
-    private final Set<MenuItem> selectedItems = new HashSet<>();
-    private final OnItemsSelectedListener listener;
+    private final Map<MenuItem, Integer> quantities = new HashMap<>();
+    private final OnQuantityChangedListener listener;
 
-    public interface OnItemsSelectedListener {
-        void onItemsSelected(List<MenuItem> selectedItems);
+    public interface OnQuantityChangedListener {
+        void onQuantityChanged(Map<MenuItem, Integer> selectedItems);
     }
 
-    public OrderMenuAdapter(List<MenuItem> menuItems, OnItemsSelectedListener listener) {
+    public OrderMenuAdapter(List<MenuItem> menuItems, OnQuantityChangedListener listener) {
         this.menuItems = menuItems;
         this.listener = listener;
     }
@@ -36,7 +37,7 @@ public class OrderMenuAdapter extends RecyclerView.Adapter<OrderMenuAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_menu, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,22 +46,45 @@ public class OrderMenuAdapter extends RecyclerView.Adapter<OrderMenuAdapter.View
         MenuItem item = menuItems.get(position);
         holder.tvName.setText(item.getName());
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₱ %.2f", item.getPrice()));
-        
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(selectedItems.contains(item));
-        
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                selectedItems.add(item);
-            } else {
-                selectedItems.remove(item);
-            }
+
+        if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(item.getImageUrl())
+                    .placeholder(R.drawable.ic_food)
+                    .error(R.drawable.ic_food)
+                    .centerCrop()
+                    .into(holder.ivMenuItem);
+        } else {
+            holder.ivMenuItem.setImageResource(R.drawable.ic_food);
+        }
+
+        int qty = quantities.getOrDefault(item, 0);
+        holder.tvQuantity.setText(String.valueOf(qty));
+
+        holder.btnPlus.setOnClickListener(v -> {
+            int newQty = quantities.getOrDefault(item, 0) + 1;
+            quantities.put(item, newQty);
+            holder.tvQuantity.setText(String.valueOf(newQty));
             if (listener != null) {
-                listener.onItemsSelected(new ArrayList<>(selectedItems));
+                listener.onQuantityChanged(new HashMap<>(quantities));
             }
         });
 
-        holder.itemView.setOnClickListener(v -> holder.checkBox.setChecked(!holder.checkBox.isChecked()));
+        holder.btnMinus.setOnClickListener(v -> {
+            int currentQty = quantities.getOrDefault(item, 0);
+            if (currentQty > 0) {
+                int newQty = currentQty - 1;
+                if (newQty == 0) {
+                    quantities.remove(item);
+                } else {
+                    quantities.put(item, newQty);
+                }
+                holder.tvQuantity.setText(String.valueOf(newQty));
+                if (listener != null) {
+                    listener.onQuantityChanged(new HashMap<>(quantities));
+                }
+            }
+        });
     }
 
     @Override
@@ -73,24 +97,28 @@ public class OrderMenuAdapter extends RecyclerView.Adapter<OrderMenuAdapter.View
         notifyDataSetChanged();
     }
 
-    public List<MenuItem> getSelectedItems() {
-        return new ArrayList<>(selectedItems);
+    public Map<MenuItem, Integer> getSelectedItemsWithQuantities() {
+        return new HashMap<>(quantities);
     }
 
     public void clearSelection() {
-        selectedItems.clear();
+        quantities.clear();
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvPrice;
-        MaterialCheckBox checkBox;
+        TextView tvName, tvPrice, tvQuantity;
+        ImageView ivMenuItem;
+        MaterialButton btnPlus, btnMinus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvItemName);
             tvPrice = itemView.findViewById(R.id.tvItemPrice);
-            checkBox = itemView.findViewById(R.id.checkboxItem);
+            ivMenuItem = itemView.findViewById(R.id.ivMenuItem);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            btnPlus = itemView.findViewById(R.id.btnPlus);
+            btnMinus = itemView.findViewById(R.id.btnMinus);
         }
     }
 }

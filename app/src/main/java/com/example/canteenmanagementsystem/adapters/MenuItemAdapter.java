@@ -43,13 +43,16 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         holder.tvName.setText(item.getName());
         holder.tvPrice.setText(String.format("₱%.2f", item.getPrice()));
 
+        // Load image using Glide
         if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load(item.getImageUrl())
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .into(holder.ivMenuItem);
+                    .placeholder(R.drawable.ic_food)
+                    .error(R.drawable.ic_food)
+                    .centerCrop()
+                    .into(holder.ivItemIcon);
         } else {
-            holder.ivMenuItem.setImageResource(android.R.drawable.ic_menu_gallery);
+            holder.ivItemIcon.setImageResource(R.drawable.ic_food);
         }
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(item));
@@ -66,13 +69,13 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvPrice;
-        ImageView ivMenuItem;
+        ImageView ivItemIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvItemName);
             tvPrice = itemView.findViewById(R.id.tvItemPrice);
-            ivMenuItem = itemView.findViewById(R.id.ivItemIcon);
+            ivItemIcon = itemView.findViewById(R.id.ivItemIcon);
         }
     }
 }

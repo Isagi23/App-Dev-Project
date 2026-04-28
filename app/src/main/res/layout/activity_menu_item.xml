@@ -4,89 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_light"
+    android:background="@color/off_white"
     tools:context=".MenuItemActivity">
 
+    <!-- Navy Header Section -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_dark"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="48dp"
+        android:layout_height="220dp"
+        android:background="@color/navy_dark"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:rotation="180"
-            android:src="@android:drawable/ic_menu_revert"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 
-        <LinearLayout
-            android:id="@+id/layoutHeaderTitles"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/btnAddMenuItemHeader"
+            android:text="Menu Items"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBack">
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-            <TextView
-                android:id="@+id/tvHeaderTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Menu Items"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvItemCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 items available"
-                android:textColor="@color/text_white_muted"
-                android:textSize="14sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvItemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="0 items available"
+            android:textColor="@color/text_white_muted"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnAddMenuItemHeader"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:cardBackgroundColor="@color/semantic_green"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/layoutHeaderTitles"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="24dp"
+            app:cardBackgroundColor="@color/primary_green"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvItemCount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/layoutHeaderTitles">
+            app:layout_constraintTop_toTopOf="@id/tvHeaderTitle">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@android:drawable/ic_input_add"
+                android:src="@drawable/ic_add"
                 app:tint="@color/white" />
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Content Container -->
+    <!-- Content Card with Rounded Top -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="-24dp"
+        android:layout_marginTop="-40dp"
         android:background="@drawable/bg_white_rounded_top"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
-        <!-- Category Filters -->
+        <!-- Category Filter Chips -->
         <HorizontalScrollView
             android:id="@+id/filterScrollView"
             android:layout_width="match_parent"
@@ -104,41 +101,38 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFilterAll"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="60dp"
+                    android:minWidth="80dp"
                     android:text="All"
-                    android:textAllCaps="false"
                     android:textColor="@color/white"
-                    app:backgroundTint="@color/primary_dark"
+                    app:backgroundTint="@color/navy_dark"
                     app:cornerRadius="24dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFilterFood"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:minWidth="80dp"
+                    android:minWidth="90dp"
                     android:text="Food"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/color_secondary_text"
                     app:cornerRadius="24dp"
-                    app:strokeColor="#E2E8F0" />
+                    app:strokeColor="@color/color_outline" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFilterDrinks"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:minWidth="80dp"
+                    android:minWidth="90dp"
                     android:text="Drinks"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/color_secondary_text"
                     app:cornerRadius="24dp"
-                    app:strokeColor="#E2E8F0" />
+                    app:strokeColor="@color/color_outline" />
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -156,26 +150,10 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingHorizontal="16dp"
-                android:paddingBottom="24dp" />
+                android:paddingBottom="24dp"
+                tools:listitem="@layout/item_menu" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/white"
-        android:elevation="8dp"
-        android:paddingTop="8dp"
-        app:itemIconSize="24dp"
-        app:itemIconTint="@color/semantic_green"
-        app:itemTextColor="@color/semantic_green"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
-    <!-- We remove the FAB as we added a "+" button in the header -->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

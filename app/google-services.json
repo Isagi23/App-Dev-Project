@@ -12,7 +12,20 @@
           "package_name": "com.example.canteenmanagementsystem"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "504716463207-usq94mfehgetutlba5i0am5a3kv5ub33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.canteenmanagementsystem",
+            "certificate_hash": "6f3735bc7afefda2a0fac5be20e473fc72b8e783"
+          }
+        },
+        {
+          "client_id": "504716463207-4nquuhl73mv7083u1uatecgrmtk2154f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCxhd285RsI5TidR9A4G8I2f_1RuAtFw-g"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504716463207-4nquuhl73mv7083u1uatecgrmtk2154f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

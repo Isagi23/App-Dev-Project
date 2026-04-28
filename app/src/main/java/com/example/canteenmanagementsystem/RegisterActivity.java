@@ -9,9 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,7 +23,8 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText etEmail, etPassword, etConfirmPassword;
+    private TextInputLayout tilFullName, tilEmail, tilPassword, tilConfirmPassword;
+    private TextInputEditText etFullName, etEmail, etPassword, etConfirmPassword;
     private MaterialButton btnRegister;
     private ProgressBar progressBar;
     private TextView tvLogin;
@@ -35,6 +39,12 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        tilFullName = findViewById(R.id.tilFullName);
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
+
+        etFullName = findViewById(R.id.etFullName);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
@@ -47,27 +57,39 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+        String fullName = etFullName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
+        // Reset errors
+        tilFullName.setError(null);
+        tilEmail.setError(null);
+        tilPassword.setError(null);
+        tilConfirmPassword.setError(null);
+
+        if (TextUtils.isEmpty(fullName)) {
+            tilFullName.setError("Full name is required");
+            return;
+        }
+
         if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Email is required");
+            tilEmail.setError("Email is required");
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Password is required");
+            tilPassword.setError("Password is required");
             return;
         }
 
         if (password.length() < 6) {
-            etPassword.setError("Password must be at least 6 characters");
+            tilPassword.setError("Password must be at least 6 characters");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("Passwords do not match");
+            tilConfirmPassword.setError("Passwords do not match");
             return;
         }
 
@@ -79,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         String userId = mAuth.getCurrentUser().getUid();
                         Map<String, Object> user = new HashMap<>();
+                        user.put("fullName", fullName);
                         user.put("email", email);
                         user.put("role", "admin");
                         user.put("createdAt", System.currentTimeMillis());
@@ -86,21 +109,36 @@ public class RegisterActivity extends AppCompatActivity {
                         db.collection("users").document(userId).set(user)
                                 .addOnSuccessListener(aVoid -> {
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                                    finishAffinity();
+                                    showSuccess("Registration successful! Welcome, " + fullName);
+                                    etFullName.postDelayed(() -> {
+                                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                        finishAffinity();
+                                    }, 1500);
                                 })
                                 .addOnFailureListener(e -> {
                                     progressBar.setVisibility(View.GONE);
                                     btnRegister.setEnabled(true);
-                                    Toast.makeText(RegisterActivity.this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    showError("Failed to save user data: " + e.getMessage());
                                 });
                     } else {
                         progressBar.setVisibility(View.GONE);
                         btnRegister.setEnabled(true);
-                        Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        showError("Registration failed: " + task.getException().getMessage());
                     }
                 });
+    }
+
+    private void showSuccess(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ContextCompat.getColor(this, R.color.primary_green))
+                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                .show();
+    }
+
+    private void showError(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ContextCompat.getColor(this, android.R.color.holo_red_dark))
+                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                .show();
     }
 }

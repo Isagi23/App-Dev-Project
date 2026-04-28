@@ -1,5 +1,6 @@
 package com.example.canteenmanagementsystem.models;
 
+import java.util.Date;
 import java.util.List;
 
 public class Order {
@@ -10,6 +11,7 @@ public class Order {
     private double totalAmount;
     private String date; // yyyy-MM-dd
     private String month; // yyyy-MM
+    private Date timestamp;
 
     public Order() {}
 
@@ -21,6 +23,7 @@ public class Order {
         this.totalAmount = totalAmount;
         this.date = date;
         this.month = month;
+        this.timestamp = new Date();
     }
 
     public String getId() { return id; }
@@ -43,6 +46,9 @@ public class Order {
 
     public String getMonth() { return month; }
     public void setMonth(String month) { this.month = month; }
+
+    public Date getTimestamp() { return timestamp; }
+    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 
     public String getItemsSummary() {
         if (itemNames == null || itemNames.isEmpty()) {

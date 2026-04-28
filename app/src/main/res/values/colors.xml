@@ -3,64 +3,67 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- New Design Palette -->
-    <color name="navy_dark">#0F172A</color>
-    <color name="primary_green">#22C55E</color>
-    <color name="off_white">#F8FAFC</color>
-
-    <!-- Supporting Colors -->
-    <color name="green_light">#F0FDF4</color>
-    <color name="blue_light">#EFF6FF</color>
-    <color name="amber_light">#FFFBEB</color>
-    <color name="red_light">#FFF1F2</color>
+    <!-- System Palette (Based on Reference) -->
+    <color name="primary_orange">#FF5722</color>
+    <color name="secondary_charcoal">#263238</color>
+    <color name="tertiary_peach">#FFAB91</color>
+    <color name="neutral_light">#F5F7F8</color>
+    <color name="off_white">#F5F7F8</color> <!-- Added for compatibility -->
+    <color name="navy_dark">#263238</color> <!-- Replaced with Secondary -->
 
     <!-- UI Tokens -->
-    <color name="color_primary">#22C55E</color>
+    <color name="color_primary">#FF5722</color>
     <color name="color_on_primary">#FFFFFF</color>
     <color name="color_surface">#FFFFFF</color>
-    <color name="color_background">#F8FAFC</color>
-    <color name="color_on_surface">#0F172A</color>
-    <color name="color_outline">#E2E8F0</color>
-    <color name="color_secondary_text">#94A3B8</color>
-    <color name="color_error">#E11D48</color>
-    <color name="color_warning">#D97706</color>
+    <color name="color_background">#FFFFFF</color>
+    <color name="color_on_surface">#263238</color>
+    <color name="color_outline">#E1E3E4</color>
+    <color name="color_secondary_text">#546067</color>
+    <color name="color_error">#BA1A1A</color>
+    <color name="color_warning">#FF5722</color>
 
     <!-- Legacy/Compatibility Mappings -->
-    <color name="brand_accent">@color/primary_green</color>
-    <color name="brand_accent_bg">@color/green_light</color>
-    <color name="brand_accent_pill">@color/green_light</color>
-    <color name="primary">@color/primary_green</color>
-    <color name="primary_dark">@color/navy_dark</color>
-    <color name="primary_light">@color/navy_dark</color>
-    <color name="bg_light">@color/off_white</color>
+    <color name="primary_green">#FF5722</color> <!-- System-wide replacement -->
+    <color name="green_light">#FFECE6</color> <!-- Tertiary alpha or similar -->
+    <color name="blue_light">#E1EBF2</color>
+    <color name="amber_light">#FFF3E0</color>
+    <color name="red_light">#FFEBEE</color>
 
-    <color name="semantic_amber">@color/color_warning</color>
-    <color name="semantic_amber_bg">@color/amber_light</color>
-    <color name="semantic_green">@color/primary_green</color>
-    <color name="semantic_green_bg">@color/green_light</color>
-    <color name="semantic_rose">@color/color_error</color>
-    <color name="semantic_rose_bg">@color/red_light</color>
-    <color name="semantic_blue">#3B82F6</color>
-    <color name="semantic_blue_bg">@color/blue_light</color>
+    <color name="brand_accent">#FF5722</color>
+    <color name="brand_accent_bg">#FFECE6</color>
+    <color name="brand_accent_pill">#FFECE6</color>
+    <color name="primary">#FF5722</color>
+    <color name="primary_dark">#263238</color>
+    <color name="primary_light">#FFAB91</color>
+    <color name="bg_light">#FFFFFF</color>
 
-    <color name="text_primary">@color/navy_dark</color>
-    <color name="text_secondary">@color/color_secondary_text</color>
-    <color name="text_white_muted">#A1A1AA</color>
+    <color name="semantic_amber">#FF9800</color>
+    <color name="semantic_amber_bg">#FFF3E0</color>
+    <color name="semantic_green">#FF5722</color>
+    <color name="semantic_green_bg">#FFECE6</color>
+    <color name="semantic_rose">#BA1A1A</color>
+    <color name="semantic_rose_bg">#FFEBEE</color>
+    <color name="semantic_blue">#2196F3</color>
+    <color name="semantic_blue_bg">#E3F2FD</color>
 
-    <color name="card_dark">@color/navy_dark</color>
+    <color name="text_primary">#263238</color>
+    <color name="text_secondary">#546067</color>
+    <color name="text_white_muted">#B0BEC5</color>
+
+    <color name="card_dark">#263238</color>
     <color name="badge_bg_dark">#33FFFFFF</color>
     <color name="badge_bg_light">#1A000000</color>
 
-    <color name="badge_green">@color/primary_green</color>
-    <color name="navy_gradient_start">@color/navy_dark</color>
-    <color name="navy_gradient_end">#1E293B</color> <!-- Slightly lighter navy for gradient -->
-    <color name="blue_icon">#3B82F6</color>
-    <color name="blue_bg">@color/blue_light</color>
-    <color name="amber_icon">@color/color_warning</color>
-    <color name="amber_bg">@color/amber_light</color>
-    <color name="green_icon">@color/primary_green</color>
-    <color name="green_bg">@color/green_light</color>
-    <color name="purple_icon">#7C3AED</color>
-    <color name="purple_bg">#F5F3FF</color>
+    <color name="badge_green">#FF5722</color>
+    <color name="navy_gradient_start">#263238</color>
+    <color name="navy_gradient_end">#37474F</color>
+    <color name="blue_icon">#2196F3</color>
+    <color name="blue_bg">#E3F2FD</color>
+    <color name="amber_icon">#FF9800</color>
+    <color name="amber_bg">#FFF3E0</color>
+    <color name="green_icon">#FF5722</color>
+    <color name="green_bg">#FFECE6</color>
+    <color name="purple_icon">#673AB7</color>
+    <color name="purple_bg">#EDE7F6</color>
     <color name="badge_bg">#1AFFFFFF</color>
 </resources>

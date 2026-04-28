@@ -109,7 +109,7 @@
                     android:id="@+id/autoCompleteEmployee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,8 +198,9 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
+            android:elevation="8dp"
             app:itemIconTint="@color/primary_green"
             app:itemTextColor="@color/primary_green"
             app:labelVisibilityMode="labeled"

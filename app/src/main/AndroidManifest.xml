@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CanteenManagementSystem">
         <activity
-            android:name=".LoginActivity"
+            android:name=".LandingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,15 +24,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".EmployeeListActivity" />
         <activity android:name=".AddEditEmployeeActivity" />
         <activity android:name=".MenuItemActivity" />
         <activity android:name=".RecordOrderActivity" />
-        <activity android:name=".ExpenseHistoryActivity" />
+        <activity android:name=".OrderHistoryActivity" />
+        <activity android:name=".EmployeeListActivity" />
         <activity android:name=".PayrollReportActivity" />
+        <activity android:name=".ExpenseHistoryActivity" />
         <activity android:name=".NotificationsActivity" />
 
         <provider

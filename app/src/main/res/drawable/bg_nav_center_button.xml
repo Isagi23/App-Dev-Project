@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Left Cyan Glow -->
+    <item
+        android:width="28dp"
+        android:height="36dp"
+        android:gravity="center_vertical|start">
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp" />
+            <solid android:color="#00F2EA" />
+        </shape>
+    </item>
+
+    <!-- Right Pink Glow -->
+    <item
+        android:width="28dp"
+        android:height="36dp"
+        android:gravity="center_vertical|end">
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp" />
+            <solid android:color="#FF0050" />
+        </shape>
+    </item>
+
+    <!-- Main Black Body -->
+    <item
+        android:width="44dp"
+        android:height="36dp"
+        android:gravity="center">
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp" />
+            <solid android:color="#161722" />
+        </shape>
+    </item>
+</layer-list>

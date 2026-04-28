@@ -29,11 +29,19 @@
 
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/Widget.App.BottomNavigationView.ActiveIndicator</item>
-        <item name="backgroundTint">@color/white</item>
+        <item name="itemIconTint">@color/nav_item_color_state</item>
+        <item name="itemTextColor">@color/nav_item_color_state</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorContainer">@color/white</item>
+        <item name="colorSurface">@color/white</item>
     </style>
 
     <style name="Widget.App.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/green_light</item>
+        <item name="android:color">@android:color/transparent</item>
     </style>
 
     <style name="ShapeAppearance.TopRounded" parent="ShapeAppearance.Material3.LargeComponent">

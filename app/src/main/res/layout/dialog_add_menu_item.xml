@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:src="@drawable/ic_gallery" />
 
         <Button
             android:id="@+id/btnSelectImage"

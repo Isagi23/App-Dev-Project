@@ -36,9 +36,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +79,7 @@ public class MenuItemActivity extends AppCompatActivity implements MenuItemAdapt
 
         db = FirebaseFirestore.getInstance();
         menuRef = db.collection("menuItems");
-        storage = FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance("gs://canteen-management-syste-12618.firebasestorage.app");
         storageRef = storage.getReference("menu_images");
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -106,19 +110,6 @@ public class MenuItemActivity extends AppCompatActivity implements MenuItemAdapt
         findViewById(R.id.btnFilterAll).setOnClickListener(v -> filterByCategory("All"));
         findViewById(R.id.btnFilterFood).setOnClickListener(v -> filterByCategory("Food"));
         findViewById(R.id.btnFilterDrinks).setOnClickListener(v -> filterByCategory("Drinks"));
-
-        com.google.android.material.bottomnavigation.BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
-        bottomNav.setSelectedItemId(R.id.nav_orders);
-        bottomNav.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                return true;
-            }
-            // Add other navigation if needed
-            return true;
-        });
 
         loadMenuItems();
     }
@@ -320,17 +311,25 @@ public class MenuItemActivity extends AppCompatActivity implements MenuItemAdapt
     }
 
     private void uploadImageAndSave(MenuItem item, String name, double price, AlertDialog dialog) {
-        String fileName = UUID.randomUUID().toString();
-        StorageReference fileRef = storageRef.child(fileName);
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            
+            // Resize image to keep it small for Firestore (max 1MB)
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+            
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
+            byte[] byteArray = outputStream.toByteArray();
+            String base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            String imageUrl = "data:image/jpeg;base64," + base64Image;
 
-        fileRef.putFile(selectedImageUri).addOnSuccessListener(taskSnapshot -> {
-            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                saveToFirestore(item, name, price, uri.toString(), dialog);
-            });
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            saveToFirestore(item, name, price, item != null ? item.getImageUrl() : "", dialog);
-        });
+            saveToFirestore(item, name, price, imageUrl, dialog);
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to process image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialogProgressBar != null) dialogProgressBar.setVisibility(View.GONE);
+            if (dialog != null) dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+        }
     }
 
     private void saveToFirestore(MenuItem item, String name, double price, String imageUrl, AlertDialog dialog) {
