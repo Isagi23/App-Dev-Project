@@ -21,15 +21,11 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
-    private TextView tvGreeting, tvCurrentDate, tvCycleBadge;
-    private TextView tvTotalEmployees, tvOrdersToday, tvMonthExpense, tvActiveUsers;
-    private TextView tvTopItem, tvPeakHour;
+    private TextView tvGreeting, tvCurrentDate, tvTotalEmployees, tvOrdersToday, tvMonthExpense;
     private View notificationBadge;
     private FirebaseFirestore db;
     private ListenerRegistration employeesListener, ordersTodayListener, monthOrdersListener, notificationsListener;
@@ -39,7 +35,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -53,14 +49,9 @@ public class HomeFragment extends Fragment {
 
         tvGreeting = view.findViewById(R.id.tvGreeting);
         tvCurrentDate = view.findViewById(R.id.tvCurrentDate);
-        tvCycleBadge = view.findViewById(R.id.tvCycleBadge);
-        
         tvTotalEmployees = view.findViewById(R.id.tvTotalEmployeesCount);
         tvOrdersToday = view.findViewById(R.id.tvOrdersTodayCount);
         tvMonthExpense = view.findViewById(R.id.tvMonthExpense);
-        tvActiveUsers = view.findViewById(R.id.tvActiveUsersCount);
-        tvTopItem = view.findViewById(R.id.tvTopItem);
-        tvPeakHour = view.findViewById(R.id.tvPeakHour);
         notificationBadge = view.findViewById(R.id.notificationBadge);
 
         setupClickListeners(view);
@@ -70,43 +61,55 @@ public class HomeFragment extends Fragment {
 
     private void setupClickListeners(View view) {
         // Notification Button
-        view.findViewById(R.id.btnNotifications).setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), NotificationsActivity.class));
-        });
+        View btnNotifications = view.findViewById(R.id.btnNotifications);
+        if (btnNotifications != null) {
+            btnNotifications.setOnClickListener(v -> {
+                startActivity(new Intent(requireContext(), NotificationsActivity.class));
+            });
+        }
 
         // Quick Actions
-        view.findViewById(R.id.btnRecordOrder).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.findViewById(R.id.bottomNavigation).performClick(); // Just to trigger UI state if needed, but we'll use loadFragment
-                activity.navigateToOrders();
-            }
-        });
+        View btnRecordOrder = view.findViewById(R.id.btnRecordOrder);
+        if (btnRecordOrder != null) {
+            btnRecordOrder.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).navigateToOrders();
+                }
+            });
+        }
         
-        view.findViewById(R.id.btnManageEmployees).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).navigateToStaff();
-            }
-        });
+        View btnManageMenu = view.findViewById(R.id.btnManageMenu);
+        if (btnManageMenu != null) {
+            btnManageMenu.setOnClickListener(v -> startActivity(new Intent(requireContext(), MenuItemActivity.class)));
+        }
         
-        view.findViewById(R.id.btnManageMenu).setOnClickListener(v -> startActivity(new Intent(requireContext(), MenuItemActivity.class)));
-        
-        view.findViewById(R.id.btnExpenseHistory).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).navigateToReports();
-            }
-        });
+        View btnExpenseHistory = view.findViewById(R.id.btnExpenseHistory);
+        if (btnExpenseHistory != null) {
+            btnExpenseHistory.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).navigateToReports();
+                }
+            });
+        }
 
-        view.findViewById(R.id.btnOrderHistory).setOnClickListener(v -> {
-            startActivity(new Intent(requireContext(), OrderHistoryActivity.class));
-        });
+        View btnOrderHistory = view.findViewById(R.id.btnOrderHistory);
+        if (btnOrderHistory != null) {
+            btnOrderHistory.setOnClickListener(v -> {
+                startActivity(new Intent(requireContext(), OrderHistoryActivity.class));
+            });
+        }
         
-        view.findViewById(R.id.tvSeeAllActions).setOnClickListener(v -> {
-             Toast.makeText(requireContext(), "See all actions clicked", Toast.LENGTH_SHORT).show();
-        });
+        View tvViewAllActivity = view.findViewById(R.id.tvViewAllActivity);
+        if (tvViewAllActivity != null) {
+            tvViewAllActivity.setOnClickListener(v -> {
+                 Toast.makeText(requireContext(), "View all activity clicked", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     private void updateHeaderInfo() {
+        if (tvGreeting == null || tvCurrentDate == null) return;
+
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         String greeting;
@@ -117,20 +120,16 @@ public class HomeFragment extends Fragment {
         } else {
             greeting = getString(R.string.greeting_evening);
         }
-        tvGreeting.setText(greeting);
+        tvGreeting.setText(String.format("%s,", greeting));
 
-        SimpleDateFormat dateSdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
+        SimpleDateFormat dateSdf = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
         tvCurrentDate.setText(dateSdf.format(new Date()));
-
-        SimpleDateFormat monthYearSdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        String cycleDate = monthYearSdf.format(new Date());
-        tvCycleBadge.setText(getString(R.string.cycle_active, cycleDate));
     }
 
     private void startStatsListeners() {
         employeesListener = db.collection("employees").addSnapshotListener((value, error) -> {
             if (error != null || !isAdded()) return;
-            if (value != null) {
+            if (value != null && tvTotalEmployees != null) {
                 tvTotalEmployees.setText(String.valueOf(value.size()));
             }
         });
@@ -140,29 +139,24 @@ public class HomeFragment extends Fragment {
 
         ordersTodayListener = db.collection("orders").whereEqualTo("date", today).addSnapshotListener((value, error) -> {
             if (error != null || !isAdded()) return;
-            if (value != null) {
+            if (value != null && tvOrdersToday != null) {
                 tvOrdersToday.setText(String.valueOf(value.size()));
             }
         });
 
         monthOrdersListener = db.collection("orders").whereEqualTo("month", currentMonth).addSnapshotListener((value, error) -> {
             if (error != null || !isAdded()) return;
-            if (value != null) {
+            if (value != null && tvMonthExpense != null) {
                 double totalExpense = 0;
-                Set<String> activeUsers = new HashSet<>();
                 for (QueryDocumentSnapshot doc : value) {
                     Order order = doc.toObject(Order.class);
                     totalExpense += order.getTotalAmount();
-                    activeUsers.add(order.getEmployeeId());
                 }
 
                 NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "PH"));
-                formatter.setMaximumFractionDigits(0);
+                formatter.setMaximumFractionDigits(2);
                 String formattedExpense = formatter.format(totalExpense);
                 tvMonthExpense.setText(formattedExpense);
-
-                tvActiveUsers.setText(String.valueOf(activeUsers.size()));
-                calculateExtraStats(value);
             }
         });
 
@@ -170,52 +164,14 @@ public class HomeFragment extends Fragment {
                 .whereEqualTo("read", false)
                 .addSnapshotListener((value, error) -> {
                     if (error != null || !isAdded()) return;
-                    if (value != null && !value.isEmpty()) {
-                        notificationBadge.setVisibility(View.VISIBLE);
-                    } else {
-                        notificationBadge.setVisibility(View.GONE);
+                    if (value != null && notificationBadge != null) {
+                        if (!value.isEmpty()) {
+                            notificationBadge.setVisibility(View.VISIBLE);
+                        } else {
+                            notificationBadge.setVisibility(View.GONE);
+                        }
                     }
                 });
-    }
-
-    private void calculateExtraStats(com.google.firebase.firestore.QuerySnapshot value) {
-        java.util.Map<String, Integer> itemCounts = new java.util.HashMap<>();
-        java.util.Map<Integer, Integer> hourCounts = new java.util.HashMap<>();
-
-        for (QueryDocumentSnapshot doc : value) {
-            Order order = doc.toObject(Order.class);
-            
-            // Peak Hour Calculation
-            if (order.getTimestamp() != null) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(order.getTimestamp());
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                hourCounts.put(hour, hourCounts.getOrDefault(hour, 0) + 1);
-            }
-
-            // Top Item (Assuming Order has a list of items or we can infer it)
-            // For now, let's just count orders as a placeholder if items aren't directly available
-        }
-
-        // Find peak hour
-        int peakHour = -1;
-        int maxOrders = 0;
-        for (java.util.Map.Entry<Integer, Integer> entry : hourCounts.entrySet()) {
-            if (entry.getValue() > maxOrders) {
-                maxOrders = entry.getValue();
-                peakHour = entry.getKey();
-            }
-        }
-
-        if (peakHour != -1) {
-            String ampm = peakHour >= 12 ? "PM" : "AM";
-            int displayHour = peakHour > 12 ? peakHour - 12 : (peakHour == 0 ? 12 : peakHour);
-            tvPeakHour.setText(displayHour + ":00 " + ampm);
-        } else {
-            tvPeakHour.setText("N/A");
-        }
-        
-        tvTopItem.setText("Regular Meal"); // Placeholder for now
     }
 
     @Override

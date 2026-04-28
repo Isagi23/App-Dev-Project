@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="20dp"
-    android:layout_marginVertical="8dp"
-    app:cardBackgroundColor="@color/color_surface"
-    app:cardCornerRadius="20dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:strokeColor="@color/color_outline"
+    app:strokeColor="#F1F5F9"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/iconContainer"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:cardBackgroundColor="@color/blue_bg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardBackgroundColor="#F8FAFB"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,11 +28,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_person"
-                app:tint="@color/blue_icon" />
+                android:contentDescription="@null"
+                app:tint="@color/dashboard_secondary" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -50,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Employee Name"
-                android:textColor="@color/navy_dark"
+                android:textColor="#1E293B"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -58,17 +59,20 @@
                 android:id="@+id/tvEmployeeId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:text="#EMP001"
-                android:textColor="@color/text_secondary"
+                android:textColor="#64748B"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvEmployeePosition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Position Name"
-                android:textColor="@color/text_secondary"
+                android:layout_marginTop="2dp"
+                android:text="@string/label_position"
+                android:textColor="#64748B"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <com.google.android.material.chip.Chip
@@ -76,13 +80,13 @@
             style="@style/Widget.MaterialComponents.Chip.Action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:textColor="@color/navy_dark"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@color/bg_light"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeWidth="0dp"
+            android:text="FIELD"
+            android:textColor="#475569"
+            android:textSize="11sp"
+            app:chipBackgroundColor="#F1F5F9"
+            app:chipMinHeight="24dp"
+            app:chipStartPadding="8dp"
+            app:chipEndPadding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

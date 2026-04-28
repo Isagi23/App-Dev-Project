@@ -18,6 +18,10 @@
     <string name="no_notifications">No new notifications</string>
     <string name="logging_out">Logging out...</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_pos">POS</string>
+    <string name="menu_stats">Stats</string>
+    <string name="menu_staff">Staff</string>
 
     <!-- Quick Action Strings -->
     <string name="action_record_order">Record Order</string>
@@ -48,6 +52,7 @@
     <string name="department_field">Field</string>
     <string name="department_packing">Packing</string>
     <string name="department_maint">Maint.</string>
+    <string name="department_admin">Admin</string>
     <string name="currency_placeholder">₱%1$.2f</string>
     <string name="content_desc_prev">Previous Month</string>
     <string name="content_desc_next">Next Month</string>
@@ -79,4 +84,19 @@
     <string name="btn_register">Register</string>
     <string name="label_already_have_account">Already have an account? </string>
     <string name="label_login">Login</string>
+
+    <!-- Dashboard Strings -->
+    <string name="title_canteen_admin">Canteen Admin</string>
+    <string name="label_todays_sales">TODAY\'S SALES</string>
+    <string name="label_active_orders">Active Orders</string>
+    <string name="label_total_staff">Total Staff</string>
+    <string name="label_recent_activity">Recent Activity</string>
+    <string name="label_view_all">View All</string>
+    <string name="label_new_order">NEW ORDER</string>
+    <string name="label_inventory">MENU</string>
+    <string name="label_reports">REPORTS</string>
+    <string name="label_system">SYSTEM</string>
+    <string name="label_employees_count_fmt">%1$d Employees</string>
+    <string name="label_employee_count_fmt_single">%1$d Employee</string>
+    <string name="label_position">Position</string>
 </resources>

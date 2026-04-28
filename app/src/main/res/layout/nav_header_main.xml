@@ -16,14 +16,13 @@
         app:cardCornerRadius="32dp"
         app:cardElevation="0dp">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="CS"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:padding="12dp"
+            android:src="@drawable/ic_food"
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView

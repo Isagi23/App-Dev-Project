@@ -81,6 +81,14 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
             startActivity(intent);
         });
 
+        View btnAddEmployee = view.findViewById(R.id.btnAddEmployee);
+        if (btnAddEmployee != null) {
+            btnAddEmployee.setOnClickListener(v -> {
+                Intent intent = new Intent(requireContext(), AddEditEmployeeActivity.class);
+                startActivity(intent);
+            });
+        }
+
         chipGroupDepartment = view.findViewById(R.id.chipGroupDepartment);
         chipGroupDepartment.setOnCheckedStateChangeListener((group, checkedIds) -> {
             if (checkedIds.isEmpty()) {
@@ -117,9 +125,11 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
     private void updateCounters() {
         if (!isAdded()) return;
         int count = employeeList.size();
-        String countStr = count + (count == 1 ? " employee" : " employees");
+        String countStr = getString(count == 1 ? R.string.label_employee_count_fmt_single : R.string.label_employees_count_fmt, count);
         if (tvEmployeeCountHeader != null) tvEmployeeCountHeader.setText(countStr);
-        if (tvTotalEmployeesCount != null) tvTotalEmployeesCount.setText(String.valueOf(count));
+        if (tvTotalEmployeesCount != null) {
+            tvTotalEmployeesCount.setText(countStr);
+        }
     }
 
     private void loadEmployees() {

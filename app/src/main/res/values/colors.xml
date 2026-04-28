@@ -66,4 +66,17 @@
     <color name="purple_icon">#673AB7</color>
     <color name="purple_bg">#EDE7F6</color>
     <color name="badge_bg">#1AFFFFFF</color>
+
+    <!-- Dashboard Design Colors -->
+    <color name="dashboard_bg">#F8FAFB</color>
+    <color name="dashboard_primary_container">#FF5722</color>
+    <color name="dashboard_outline_variant">#E4BEB4</color>
+    <color name="dashboard_on_surface">#191C1D</color>
+    <color name="dashboard_secondary">#546067</color>
+    <color name="status_paid_bg">#DCFCE7</color>
+    <color name="status_paid_text">#15803D</color>
+    <color name="status_preparing_bg">#FFEDD5</color>
+    <color name="status_preparing_text">#C2410C</color>
+    <color name="status_ready_bg">#DBEAFE</color>
+    <color name="status_ready_text">#1D4ED8</color>
 </resources>
