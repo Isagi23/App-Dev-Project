@@ -142,23 +142,13 @@ public class MenuItemActivity extends AppCompatActivity implements MenuItemAdapt
     }
 
     private void updateFilterButtons(String selected) {
-        Button btnAll = findViewById(R.id.btnFilterAll);
-        Button btnFood = findViewById(R.id.btnFilterFood);
-        Button btnDrinks = findViewById(R.id.btnFilterDrinks);
+        com.google.android.material.chip.Chip btnAll = findViewById(R.id.btnFilterAll);
+        com.google.android.material.chip.Chip btnFood = findViewById(R.id.btnFilterFood);
+        com.google.android.material.chip.Chip btnDrinks = findViewById(R.id.btnFilterDrinks);
 
-        styleFilterButton(btnAll, selected.equals("All"));
-        styleFilterButton(btnFood, selected.equals("Food"));
-        styleFilterButton(btnDrinks, selected.equals("Drinks"));
-    }
-
-    private void styleFilterButton(Button btn, boolean isSelected) {
-        if (isSelected) {
-            btn.setBackgroundTintList(android.content.res.ColorStateList.valueOf(getResources().getColor(R.color.primary_dark)));
-            btn.setTextColor(getResources().getColor(R.color.white));
-        } else {
-            btn.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.TRANSPARENT));
-            btn.setTextColor(getResources().getColor(R.color.text_secondary));
-        }
+        if (btnAll != null) btnAll.setChecked(selected.equals("All"));
+        if (btnFood != null) btnFood.setChecked(selected.equals("Food"));
+        if (btnDrinks != null) btnDrinks.setChecked(selected.equals("Drinks"));
     }
 
     private void filter(String text) {

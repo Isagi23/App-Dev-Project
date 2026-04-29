@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
         startNotificationsListener();
 
         view.findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
-        view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditNameDialog());
+//        view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditNameDialog());
         view.findViewById(R.id.btnPersonalInfo).setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), PersonalInfoActivity.class));
         });

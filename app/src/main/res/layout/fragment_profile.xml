@@ -17,14 +17,13 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_food"
+            android:src="@drawable/app_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/color_primary" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvHeaderTitle"
@@ -126,16 +125,16 @@
                     android:textColor="@color/dashboard_secondary"
                     android:textSize="14sp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEditProfile"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/btn_edit_profile_label"
-                    android:textColor="@color/dashboard_on_surface"
-                    app:cornerRadius="24dp"
-                    app:strokeColor="@color/dashboard_outline_variant" />
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/btnEditProfile"-->
+<!--                    style="@style/Widget.Material3.Button.OutlinedButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:text="@string/btn_edit_profile_label"-->
+<!--                    android:textColor="@color/dashboard_on_surface"-->
+<!--                    app:cornerRadius="24dp"-->
+<!--                    app:strokeColor="@color/dashboard_outline_variant" />-->
             </LinearLayout>
 
             <!-- Account Section -->

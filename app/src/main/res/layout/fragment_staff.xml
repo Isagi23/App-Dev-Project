@@ -18,14 +18,13 @@
 
         <ImageView
             android:id="@+id/ivMenu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_food"
+            android:src="@drawable/app_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/color_primary" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvStaffTitle"
@@ -111,80 +110,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:selectionRequired="true"
-            app:singleSelection="true"
-            app:chipSpacingHorizontal="8dp">
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipAll"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="@string/department_all"
-                app:chipBackgroundColor="@color/color_primary"
-                android:textColor="@color/white"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeWidth="0dp" />
+                android:text="@string/department_all" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipPacking"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/department_packing"
-                app:chipBackgroundColor="@color/white"
-                android:textColor="@color/dashboard_secondary"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeColor="@color/dashboard_outline_variant"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/department_packing" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipHarvester"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/department_harvester"
-                app:chipBackgroundColor="@color/white"
-                android:textColor="@color/dashboard_secondary"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeColor="@color/dashboard_outline_variant"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/department_harvester" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipUtility"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/department_utility"
-                app:chipBackgroundColor="@color/white"
-                android:textColor="@color/dashboard_secondary"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeColor="@color/dashboard_outline_variant"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/department_utility" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipAdmin"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/department_admin"
-                app:chipBackgroundColor="@color/white"
-                android:textColor="@color/dashboard_secondary"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeColor="@color/dashboard_outline_variant"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/department_admin" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipEngineering"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.FilterChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/department_engineering"
-                app:chipBackgroundColor="@color/white"
-                android:textColor="@color/dashboard_secondary"
-                app:chipCornerRadius="20dp"
-                app:chipStrokeColor="@color/dashboard_outline_variant"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/department_engineering" />
 
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

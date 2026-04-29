@@ -63,10 +63,9 @@
                             android:layout_marginBottom="8dp">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:src="@drawable/ic_food"
-                                app:tint="@color/primary_orange"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/app_logo"
                                 android:contentDescription="@null" />
 
                             <TextView

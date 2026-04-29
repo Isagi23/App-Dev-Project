@@ -14,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.canteenmanagementsystem.adapters.EmployeeAdapter;
 import com.example.canteenmanagementsystem.models.Employee;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,10 +29,12 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
     private RecyclerView rvEmployees;
     private EmployeeAdapter adapter;
     private List<Employee> employeeList;
+    private List<Employee> filteredList;
     private FirebaseFirestore db;
     private CollectionReference employeesRef;
     private SwipeRefreshLayout swipeRefresh;
     private TextView tvEmployeeCountHeader, tvTotalEmployeesCount;
+    private String currentDepartment = "All";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,8 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
         rvEmployees = findViewById(R.id.rvEmployees);
         rvEmployees.setLayoutManager(new LinearLayoutManager(this));
         employeeList = new ArrayList<>();
-        adapter = new EmployeeAdapter(employeeList, this);
+        filteredList = new ArrayList<>();
+        adapter = new EmployeeAdapter(filteredList, this);
         rvEmployees.setAdapter(adapter);
 
         tvEmployeeCountHeader = findViewById(R.id.tvEmployeeCountHeader);
@@ -52,11 +57,33 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
         swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(this::loadEmployees);
 
+        ChipGroup chipGroup = findViewById(R.id.chipGroupDepartment);
+        chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            if (!checkedIds.isEmpty()) {
+                Chip chip = findViewById(checkedIds.get(0));
+                currentDepartment = chip.getText().toString().trim();
+            } else {
+                currentDepartment = "All";
+            }
+            filterList();
+        });
+
         findViewById(R.id.btnAddEmployeeHeader).setOnClickListener(v -> {
             startActivity(new Intent(this, AddEditEmployeeActivity.class));
         });
 
         loadEmployees();
+    }
+
+    private void filterList() {
+        filteredList.clear();
+        for (Employee e : employeeList) {
+            if (currentDepartment.equals("All") || (e.getDepartment() != null && e.getDepartment().equalsIgnoreCase(currentDepartment))) {
+                filteredList.add(e);
+            }
+        }
+        adapter.notifyDataSetChanged();
+        tvEmployeeCountHeader.setText(filteredList.size() + " employees");
     }
 
     private void loadEmployees() {
@@ -75,8 +102,7 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
                     employee.setId(doc.getId());
                     employeeList.add(employee);
                 }
-                adapter.notifyDataSetChanged();
-                tvEmployeeCountHeader.setText(employeeList.size() + " employees");
+                filterList();
                 tvTotalEmployeesCount.setText(String.valueOf(employeeList.size()));
             }
         });

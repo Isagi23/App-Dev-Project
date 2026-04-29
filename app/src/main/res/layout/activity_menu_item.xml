@@ -94,46 +94,35 @@
             android:scrollbars="none"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                app:singleSelection="true"
+                app:selectionRequired="true">
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/btnFilterAll"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.App.FilterChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="All"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@color/navy_dark"
-                    app:cornerRadius="24dp" />
+                    android:checked="true"
+                    android:text="All" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/btnFilterFood"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.App.FilterChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:minWidth="90dp"
-                    android:text="Food"
-                    android:textColor="@color/color_secondary_text"
-                    app:cornerRadius="24dp"
-                    app:strokeColor="@color/color_outline" />
+                    android:text="Food" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.chip.Chip
                     android:id="@+id/btnFilterDrinks"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.App.FilterChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:minWidth="90dp"
-                    android:text="Drinks"
-                    android:textColor="@color/color_secondary_text"
-                    app:cornerRadius="24dp"
-                    app:strokeColor="@color/color_outline" />
-            </LinearLayout>
+                    android:text="Drinks" />
+            </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

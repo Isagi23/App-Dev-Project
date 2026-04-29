@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Canteen Management System</string>
+    <string name="app_name">Canteen &amp; Salary Deduction</string>
     <string name="title_employee_mgmt">Employee Management</string>
     <string name="title_menu_mgmt">Menu Management</string>
     <string name="title_record_order">Record Order</string>
@@ -99,7 +99,7 @@
     <string name="label_new_order">NEW ORDER</string>
     <string name="label_inventory">MENU</string>
     <string name="label_reports">REPORTS</string>
-    <string name="label_system">SYSTEM</string>
+    <string name="label_system">ORDER HISTORY</string>
     <string name="label_employees_count_fmt">%1$d Employees</string>
     <string name="label_employee_count_fmt_single">%1$d Employee</string>
     <string name="label_position">Position</string>
@@ -230,4 +230,8 @@
 
     <string name="label_canteen_footer">© 2023 Canteen Management System. All Rights Reserved.</string>
     <string name="label_cookie_policy">Cookie Policy</string>
+    <string name="label_total_spent">TOTAL SPENT</string>
+    <string name="label_total_orders">TOTAL ORDERS</string>
+    <string name="label_individual_history">Individual History</string>
+    <string name="msg_history_exported">Order history report for %1$s has been saved.</string>
 </resources>

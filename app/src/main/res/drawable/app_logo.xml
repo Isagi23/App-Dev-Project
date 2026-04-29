@@ -1,0 +1,43 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background for padding and centering -->
+    <path
+        android:pathData="M0,0h200v200h-200z"
+        android:fillColor="#00000000" />
+
+    <!-- Group to center the elements -->
+    <group
+        android:translateX="25"
+        android:translateY="40">
+
+        <!-- Fork (Dark Gray/Charcoal) -->
+        <path
+            android:fillColor="@color/secondary_charcoal"
+            android:pathData="M25,0 v30 c0,10 4,18 10,22 v60 a8,8 0 0 0 16,0 v-60 c6,-4 10,-12 10,-22 v-30 h-4 v30 a4,4 0 0 1 -4,4 h-4 a4,4 0 0 1 -4,-4 v-30 h-4 v30 a4,4 0 0 1 -4,4 h-4 a4,4 0 0 1 -4,-4 v-30 z" />
+
+        <!-- Knife (Dark Gray/Charcoal) -->
+        <path
+            android:fillColor="@color/secondary_charcoal"
+            android:pathData="M75,0 c-15,10 -15,40 -15,55 v57 a8,8 0 0 0 16,0 v-112 z" />
+
+        <!-- Bar 1 (Primary Orange) -->
+        <path
+            android:fillColor="@color/primary_orange"
+            android:pathData="M85,70 h18 v42 a2,2 0 0 1 -2,2 h-14 a2,2 0 0 1 -2,-2 z" />
+
+        <!-- Bar 2 (Primary Orange) -->
+        <path
+            android:fillColor="@color/primary_orange"
+            android:pathData="M110,45 h18 v67 a2,2 0 0 1 -2,2 h-14 a2,2 0 0 1 -2,-2 z" />
+
+        <!-- Bar 3 (Primary Orange) -->
+        <path
+            android:fillColor="@color/primary_orange"
+            android:pathData="M135,20 h18 v92 a2,2 0 0 1 -2,2 h-14 a2,2 0 0 1 -2,-2 z" />
+
+    </group>
+</vector>

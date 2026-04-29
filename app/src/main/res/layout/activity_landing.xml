@@ -27,28 +27,12 @@
         android:padding="32dp">
 
         <!-- Brand Element -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_food"
-                app:tint="@color/primary_orange" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="CanteenManager"
-                android:textColor="@color/white"
-                android:textSize="32sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/app_logo"
+            android:scaleType="fitCenter" />
 
         <!-- Hero Headline -->
         <TextView

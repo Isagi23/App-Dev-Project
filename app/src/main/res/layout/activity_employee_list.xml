@@ -91,31 +91,29 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipAll"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="All"
-                        app:chipBackgroundColor="@color/navy_dark"
-                        android:textColor="@color/white" />
+                        android:text="All" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipField"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Field" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipPacking"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Packing" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipMaintenance"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Maintenance" />

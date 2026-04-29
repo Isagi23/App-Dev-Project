@@ -42,6 +42,7 @@
         <activity android:name=".NotificationsActivity" />
         <activity android:name=".TermsOfServiceActivity" />
         <activity android:name=".PrivacyPolicyActivity" />
+        <activity android:name=".EmployeeOrderHistoryActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

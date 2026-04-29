@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.canteenmanagementsystem.R;
 import com.example.canteenmanagementsystem.models.Order;
+import com.example.canteenmanagementsystem.models.OrderItem;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,19 +20,25 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     private List<Order> orders;
     private OnOrderDeleteListener deleteListener;
+    private OnOrderClickListener clickListener;
     private SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
 
     public interface OnOrderDeleteListener {
         void onDelete(Order order);
     }
 
-    public OrderHistoryAdapter(List<Order> orders) {
-        this(orders, null);
+    public interface OnOrderClickListener {
+        void onClick(Order order);
     }
 
-    public OrderHistoryAdapter(List<Order> orders, OnOrderDeleteListener deleteListener) {
+    public OrderHistoryAdapter(List<Order> orders) {
+        this(orders, null, null);
+    }
+
+    public OrderHistoryAdapter(List<Order> orders, OnOrderDeleteListener deleteListener, OnOrderClickListener clickListener) {
         this.orders = orders;
         this.deleteListener = deleteListener;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -46,8 +53,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         Order order = orders.get(position);
         holder.tvDate.setText(order.getTimestamp() != null ? sdf.format(order.getTimestamp()) : order.getDate());
         holder.tvEmployee.setText(order.getEmployeeName());
-        holder.tvItems.setText(order.getItemsSummary());
+        holder.tvItems.setText(order.getDetailedItemsSummary());
         holder.tvAmount.setText(String.format(Locale.getDefault(), "₱%.2f", order.getTotalAmount()));
+
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onClick(order);
+            }
+        });
 
         holder.itemView.setOnLongClickListener(v -> {
             if (deleteListener != null) {

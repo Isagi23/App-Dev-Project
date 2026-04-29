@@ -17,6 +17,7 @@ import com.example.canteenmanagementsystem.models.Employee;
 import com.example.canteenmanagementsystem.models.MenuItem;
 import com.example.canteenmanagementsystem.models.Notification;
 import com.example.canteenmanagementsystem.models.Order;
+import com.example.canteenmanagementsystem.models.OrderItem;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -189,10 +190,15 @@ public class RecordOrderActivity extends AppCompatActivity {
 
         double totalAmount = 0;
         List<String> flatItemNames = new ArrayList<>();
+        List<OrderItem> detailedItems = new ArrayList<>();
+
         for (Map.Entry<MenuItem, Integer> entry : selectedQuantities.entrySet()) {
             MenuItem item = entry.getKey();
             int qty = entry.getValue();
             totalAmount += item.getPrice() * qty;
+            
+            detailedItems.add(new OrderItem(item.getName(), item.getPrice(), qty));
+            
             for (int i = 0; i < qty; i++) {
                 flatItemNames.add(item.getName());
             }
@@ -203,6 +209,7 @@ public class RecordOrderActivity extends AppCompatActivity {
         String currentMonth = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(new Date());
 
         Order order = new Order(null, selectedEmployeeId, selectedEmployeeName, flatItemNames, totalAmount, today, currentMonth);
+        order.setItems(detailedItems);
 
         progressBar.setVisibility(View.VISIBLE);
         db.collection("orders").add(order).addOnSuccessListener(documentReference -> {

@@ -113,12 +113,12 @@ public class HomeFragment extends Fragment {
             });
         }
         
-        View tvViewAllActivity = view.findViewById(R.id.tvViewAllActivity);
-        if (tvViewAllActivity != null) {
-            tvViewAllActivity.setOnClickListener(v -> {
-                startActivity(new Intent(requireContext(), OrderHistoryActivity.class));
-            });
-        }
+//        View tvViewAllActivity = view.findViewById(R.id.tvViewAllActivity);
+//        if (tvViewAllActivity != null) {
+//            tvViewAllActivity.setOnClickListener(v -> {
+//                startActivity(new Intent(requireContext(), OrderHistoryActivity.class));
+//            });
+//        }
     }
 
     private void updateHeaderInfo() {

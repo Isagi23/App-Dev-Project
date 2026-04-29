@@ -12,6 +12,7 @@ public class Order {
     private String date; // yyyy-MM-dd
     private String month; // yyyy-MM
     private Date timestamp;
+    private List<OrderItem> items;
 
     public Order() {}
 
@@ -25,6 +26,9 @@ public class Order {
         this.month = month;
         this.timestamp = new Date();
     }
+
+    public List<OrderItem> getItems() { return items; }
+    public void setItems(List<OrderItem> items) { this.items = items; }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -55,5 +59,23 @@ public class Order {
             return "";
         }
         return String.join(", ", itemNames);
+    }
+
+    public String getDetailedItemsSummary() {
+        if (items == null || items.isEmpty()) {
+            return getItemsSummary();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            OrderItem item = items.get(i);
+            sb.append(item.getName())
+                    .append(" (₱")
+                    .append(String.format(java.util.Locale.getDefault(), "%.2f", item.getPrice()))
+                    .append(" x")
+                    .append(item.getQuantity())
+                    .append(")");
+            if (i < items.size() - 1) sb.append(", ");
+        }
+        return sb.toString();
     }
 }

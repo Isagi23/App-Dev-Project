@@ -62,38 +62,36 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipPacking"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="@string/department_packing"
-                        app:chipBackgroundColor="@color/navy_dark"
-                        android:textColor="@color/white" />
+                        android:text="@string/department_packing" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipHarvester"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/department_harvester" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipUtility"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/department_utility" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipAdmin"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/department_admin" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipEngineering"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.App.FilterChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/department_engineering" />
