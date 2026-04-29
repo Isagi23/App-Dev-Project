@@ -71,20 +71,26 @@ public class RecordOrderActivity extends AppCompatActivity {
     private void setupCategoryChips() {
         ChipGroup chipGroup = findViewById(R.id.chipGroupCategories);
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.isEmpty()) return;
-
-            int checkedId = checkedIds.get(0);
-            Chip chip = group.findViewById(checkedId);
-            if (chip != null) {
-                String category = chip.getText().toString().trim();
-                if (category.equalsIgnoreCase("Maint.")) {
-                    currentDepartmentFilter = "Maintenance";
-                } else {
-                    currentDepartmentFilter = category;
+            if (checkedIds.isEmpty()) {
+                currentDepartmentFilter = "Field"; // Default fallback
+            } else {
+                int checkedId = checkedIds.get(0);
+                Chip chip = group.findViewById(checkedId);
+                if (chip != null) {
+                    currentDepartmentFilter = chip.getText().toString().trim();
                 }
-                updateEmployeeDropdown();
             }
+            updateEmployeeDropdown();
         });
+        
+        // Ensure initial filter matches the checked chip
+        int checkedId = chipGroup.getCheckedChipId();
+        if (checkedId != View.NO_ID) {
+            Chip chip = chipGroup.findViewById(checkedId);
+            if (chip != null) {
+                currentDepartmentFilter = chip.getText().toString().trim();
+            }
+        }
     }
 
     private void loadEmployees() {

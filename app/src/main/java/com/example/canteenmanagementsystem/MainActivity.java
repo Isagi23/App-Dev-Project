@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void loadFragment(Fragment fragment, String tag) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, tag);
+        transaction.commit();
+    }
+
     public void openDrawer() {
         // Method kept for compatibility with other fragments if needed, 
         // but drawer layout has been removed.
@@ -88,20 +94,5 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
-    }
-
-    private void loadFragment(Fragment fragment, String tag) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        
-        // Add custom animations
-        transaction.setCustomAnimations(
-                android.R.anim.fade_in,
-                android.R.anim.fade_out,
-                android.R.anim.fade_in,
-                android.R.anim.fade_out
-        );
-        
-        transaction.replace(R.id.fragment_container, fragment, tag);
-        transaction.commit();
     }
 }

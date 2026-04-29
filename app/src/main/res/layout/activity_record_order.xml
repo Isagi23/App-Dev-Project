@@ -82,7 +82,7 @@
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Maint." />
+                        android:text="Maintenance" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipHarvest"

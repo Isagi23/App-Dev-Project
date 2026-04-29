@@ -3,93 +3,120 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="6dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:strokeColor="#F1F5F9"
-    app:strokeWidth="1dp">
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/dashboard_outline_variant">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/iconContainer"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardBackgroundColor="#F8FAFB"
-            app:cardCornerRadius="12dp"
+            android:id="@+id/avatarContainer"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="28dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
+                android:id="@+id/ivEmployeeAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_person"
-                android:contentDescription="@null"
+                android:contentDescription="@string/menu_profile"
                 app:tint="@color/dashboard_secondary" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chipDepartmentBadge"
-            app:layout_constraintStart_toEndOf="@id/iconContainer"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toBottomOf="@id/avatarContainer"
+            app:layout_constraintEnd_toStartOf="@+id/llRightInfo"
+            app:layout_constraintStart_toEndOf="@id/avatarContainer"
+            app:layout_constraintTop_toTopOf="@id/avatarContainer">
 
             <TextView
                 android:id="@+id/tvEmployeeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Employee Name"
-                android:textColor="#1E293B"
+                android:textColor="@color/dashboard_on_surface"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvEmployeeId"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="#EMP001"
-                android:textColor="#64748B"
-                android:textSize="12sp" />
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvEmployeePosition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="@string/label_position"
-                android:textColor="#64748B"
-                android:textSize="12sp" />
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_history"
+                    android:contentDescription="@null"
+                    app:tint="@color/dashboard_secondary" />
 
+                <TextView
+                    android:id="@+id/tvEmployeeId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="ID: CA-001"
+                    android:textColor="@color/dashboard_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipDepartmentBadge"
-            style="@style/Widget.MaterialComponents.Chip.Action"
+        <LinearLayout
+            android:id="@+id/llRightInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FIELD"
-            android:textColor="#475569"
-            android:textSize="11sp"
-            app:chipBackgroundColor="#F1F5F9"
-            app:chipMinHeight="24dp"
-            app:chipStartPadding="8dp"
-            app:chipEndPadding="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDepartmentBadge"
+                style="@style/Widget.Material3.Chip.Suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:text="FIELD"
+                android:textColor="@color/dashboard_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/dashboard_outline_variant"
+                app:chipMinHeight="24dp"
+                app:chipCornerRadius="12dp"
+                app:chipStrokeWidth="0dp" />
+
+            <TextView
+                android:id="@+id/tvEmployeeSalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="₱3,200"
+                android:textColor="@color/dashboard_on_surface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

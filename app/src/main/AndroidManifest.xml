@@ -36,8 +36,9 @@
         <activity android:name=".RecordOrderActivity" />
         <activity android:name=".OrderHistoryActivity" />
         <activity android:name=".EmployeeListActivity" />
-        <activity android:name=".PayrollReportActivity" />
-        <activity android:name=".ExpenseHistoryActivity" />
+        <activity android:name=".SecurityActivity" />
+        <activity android:name=".PersonalInfoActivity" />
+        <activity android:name=".NotificationSettingsActivity" />
         <activity android:name=".NotificationsActivity" />
 
         <provider

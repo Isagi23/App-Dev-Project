@@ -2,16 +2,16 @@ package com.example.canteenmanagementsystem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +22,7 @@ import com.example.canteenmanagementsystem.models.Employee;
 import com.example.canteenmanagementsystem.utils.NetworkUtils;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -42,9 +43,10 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
     private CollectionReference employeesRef;
     private ChipGroup chipGroupDepartment;
     private SwipeRefreshLayout swipeRefresh;
-    private TextView tvEmployeeCountHeader, tvTotalEmployeesCount;
+    private EditText etSearch;
     private String currentDepartmentFilter = null;
-    private ListenerRegistration employeeListener;
+    private ListenerRegistration employeeListener, notificationsListener;
+    private View notificationBadge;
 
     public StaffFragment() {
         // Required empty public constructor
@@ -70,16 +72,30 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
         adapter = new EmployeeAdapter(employeeList, this);
         rvEmployees.setAdapter(adapter);
 
-        tvEmployeeCountHeader = view.findViewById(R.id.tvEmployeeCountHeader);
-        tvTotalEmployeesCount = view.findViewById(R.id.tvTotalEmployeesCount);
+        notificationBadge = view.findViewById(R.id.notificationBadge);
+        View btnNotifications = view.findViewById(R.id.btnNotifications);
+        if (btnNotifications != null) {
+            btnNotifications.setOnClickListener(v -> {
+                startActivity(new Intent(requireContext(), NotificationsActivity.class));
+            });
+        }
+
+        etSearch = view.findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterList(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(this::loadEmployees);
-
-        view.findViewById(R.id.btnAddEmployeeHeader).setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), AddEditEmployeeActivity.class);
-            startActivity(intent);
-        });
 
         View btnAddEmployee = view.findViewById(R.id.btnAddEmployee);
         if (btnAddEmployee != null) {
@@ -105,31 +121,34 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
         });
 
         loadEmployees();
+        startNotificationsListener();
+    }
+
+    private void startNotificationsListener() {
+        notificationsListener = db.collection("notifications")
+                .whereEqualTo("read", false)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || !isAdded()) return;
+                    if (value != null && notificationBadge != null) {
+                        notificationBadge.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
+                    }
+                });
     }
 
     private void filterList(String query) {
         String lowerCaseQuery = query.toLowerCase(Locale.getDefault());
         List<Employee> filtered = new ArrayList<>();
         for (Employee e : fullEmployeeList) {
-            if (e.getFullName().toLowerCase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                (e.getEmployeeId() != null && e.getEmployeeId().toLowerCase(Locale.getDefault()).contains(lowerCaseQuery))) {
+            String fullName = e.getFullName() != null ? e.getFullName().toLowerCase(Locale.getDefault()) : "";
+            String employeeId = e.getEmployeeId() != null ? e.getEmployeeId().toLowerCase(Locale.getDefault()) : "";
+            
+            if (fullName.contains(lowerCaseQuery) || employeeId.contains(lowerCaseQuery)) {
                 filtered.add(e);
             }
         }
         employeeList.clear();
         employeeList.addAll(filtered);
         adapter.notifyDataSetChanged();
-        updateCounters();
-    }
-
-    private void updateCounters() {
-        if (!isAdded()) return;
-        int count = employeeList.size();
-        String countStr = getString(count == 1 ? R.string.label_employee_count_fmt_single : R.string.label_employees_count_fmt, count);
-        if (tvEmployeeCountHeader != null) tvEmployeeCountHeader.setText(countStr);
-        if (tvTotalEmployeesCount != null) {
-            tvTotalEmployeesCount.setText(countStr);
-        }
     }
 
     private void loadEmployees() {
@@ -166,7 +185,7 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
                     employee.setId(doc.getId());
                     fullEmployeeList.add(employee);
                 }
-                filterList("");
+                filterList(etSearch != null ? etSearch.getText().toString() : "");
             }
         });
     }
@@ -201,6 +220,9 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
         super.onDestroyView();
         if (employeeListener != null) {
             employeeListener.remove();
+        }
+        if (notificationsListener != null) {
+            notificationsListener.remove();
         }
     }
 }

@@ -200,11 +200,11 @@ public class OrdersFragment extends Fragment {
         }
 
         if (summaryParts.isEmpty()) {
-            tvSummaryItems.setText("No items selected");
-            tvSummaryTotal.setText("₱ 0.00");
+            tvSummaryItems.setText(R.string.no_items_selected);
+            tvSummaryTotal.setText(getString(R.string.label_total_amount_fmt, 0.0));
         } else {
             tvSummaryItems.setText(String.join(", ", summaryParts));
-            tvSummaryTotal.setText(String.format(Locale.getDefault(), "₱ %.2f", total));
+            tvSummaryTotal.setText(getString(R.string.label_total_amount_fmt, total));
         }
     }
 

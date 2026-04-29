@@ -33,15 +33,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.canteenmanagementsystem.adapters.PayrollAdapter;
+import com.example.canteenmanagementsystem.adapters.TopSellingAdapter;
 import com.example.canteenmanagementsystem.models.Employee;
 import com.example.canteenmanagementsystem.models.Order;
 import com.example.canteenmanagementsystem.utils.NetworkUtils;
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -64,15 +69,17 @@ import java.util.concurrent.Executors;
 
 public class ReportsFragment extends Fragment {
 
-    private TextView tvSelectedMonth, tvTotalEmployees, tvGrandTotalDeductions;
+    private TextView tvSelectedMonth, tvTotalEmployees, tvGrandTotalDeductions, tvHeaderSubtitle;
     private SwipeRefreshLayout swipeRefresh;
-    private RecyclerView rvPayrollReport;
-    private BarChart barChart;
+    private RecyclerView rvPayrollReport, rvTopSelling;
+    private LineChart lineChart;
     private PayrollAdapter adapter;
+    private TopSellingAdapter topSellingAdapter;
     private List<Employee> allEmployees = new ArrayList<>();
     private List<Employee> filteredEmployees = new ArrayList<>();
     private Map<String, Double> deductionsMap = new HashMap<>();
     private Map<String, Integer> itemSalesMap = new HashMap<>();
+    private Map<String, Double> dailySalesMap = new HashMap<>();
     private String selectedDepartment = "All";
 
     private FirebaseFirestore db;
@@ -98,22 +105,31 @@ public class ReportsFragment extends Fragment {
         tvSelectedMonth = view.findViewById(R.id.tvSelectedMonth);
         tvTotalEmployees = view.findViewById(R.id.tvTotalEmployees);
         tvGrandTotalDeductions = view.findViewById(R.id.tvGrandTotalDeductions);
+        tvHeaderSubtitle = view.findViewById(R.id.tvHeaderSubtitle);
         rvPayrollReport = view.findViewById(R.id.rvPayrollReport);
-        barChart = view.findViewById(R.id.barChart);
+        rvTopSelling = view.findViewById(R.id.rvTopSelling);
+        lineChart = view.findViewById(R.id.lineChart);
         ChipGroup chipGroup = view.findViewById(R.id.chipGroupDepartment);
         ImageButton btnPrev = view.findViewById(R.id.btnPrevMonth);
         ImageButton btnNext = view.findViewById(R.id.btnNextMonth);
         Button btnExport = view.findViewById(R.id.btnExportPdf);
+        ImageButton btnNotifications = view.findViewById(R.id.btnNotifications);
+
+        btnNotifications.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), NotificationsActivity.class));
+        });
 
         rvPayrollReport.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PayrollAdapter(filteredEmployees, deductionsMap);
         rvPayrollReport.setAdapter(adapter);
 
+        rvTopSelling.setLayoutManager(new LinearLayoutManager(getContext()));
+
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         swipeRefresh.setOnRefreshListener(this::loadData);
 
         updateMonthDisplay();
-        setupChart();
+        setupCharts();
         loadData();
 
         btnPrev.setOnClickListener(v -> {
@@ -152,30 +168,34 @@ public class ReportsFragment extends Fragment {
     }
 
     private void updateMonthDisplay() {
-        tvSelectedMonth.setText(monthFormat.format(calendar.getTime()));
+        String month = monthFormat.format(calendar.getTime());
+        tvSelectedMonth.setText(month);
+        if (tvHeaderSubtitle != null) {
+            tvHeaderSubtitle.setText(getString(R.string.label_reporting_period, month));
+        }
     }
 
-    private void setupChart() {
-        if (barChart == null) return;
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
-        barChart.getDescription().setEnabled(false);
-        barChart.setMaxVisibleValueCount(60);
-        barChart.setPinchZoom(false);
-        barChart.setDrawGridBackground(false);
-        barChart.getLegend().setEnabled(false);
+    private void setupCharts() {
+        setupLineChart();
+    }
 
-        XAxis xAxis = barChart.getXAxis();
+    private void setupLineChart() {
+        if (lineChart == null) return;
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.setPinchZoom(false);
+
+        XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
         xAxis.setTextColor(Color.GRAY);
-        xAxis.setLabelCount(5);
 
-        barChart.getAxisLeft().setDrawGridLines(true);
-        barChart.getAxisLeft().setGridColor(Color.LTGRAY);
-        barChart.getAxisLeft().setTextColor(Color.GRAY);
-        barChart.getAxisRight().setEnabled(false);
+        lineChart.getAxisLeft().setDrawGridLines(true);
+        lineChart.getAxisLeft().setGridColor(Color.LTGRAY);
+        lineChart.getAxisLeft().setTextColor(Color.GRAY);
+        lineChart.getAxisRight().setEnabled(false);
     }
 
     private void loadData() {
@@ -184,7 +204,10 @@ public class ReportsFragment extends Fragment {
             if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
             return;
         }
-        if (swipeRefresh != null) swipeRefresh.setRefreshing(true);
+        
+        // Never show auto-spinner on initial open, only manual swipe
+        // This makes the transition "smooth" without a popping loading bar
+
         db.collection("employees").get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!isAdded()) return;
             allEmployees.clear();
@@ -210,6 +233,7 @@ public class ReportsFragment extends Fragment {
                     if (!isAdded()) return;
                     deductionsMap.clear();
                     itemSalesMap.clear();
+                    dailySalesMap.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         Order order = doc.toObject(Order.class);
                         String empId = order.getEmployeeId();
@@ -222,9 +246,15 @@ public class ReportsFragment extends Fragment {
                                 itemSalesMap.put(itemName, itemSalesMap.getOrDefault(itemName, 0) + 1);
                             }
                         }
+
+                        // Collect daily sales data
+                        if (order.getDate() != null) {
+                            Double currentDaily = dailySalesMap.get(order.getDate());
+                            dailySalesMap.put(order.getDate(), (currentDaily != null ? currentDaily : 0.0) + amount);
+                        }
                     }
                     filterList();
-                    updateChart();
+                    updateCharts();
                     if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
                 }).addOnFailureListener(e -> {
                     if (!isAdded()) return;
@@ -233,46 +263,75 @@ public class ReportsFragment extends Fragment {
                 });
     }
 
-    private void updateChart() {
-        if (barChart == null) return;
+    private void updateCharts() {
+        updateTopSellingList();
+        updateLineChart();
+    }
+
+    private void updateTopSellingList() {
+        if (rvTopSelling == null) return;
 
         List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(itemSalesMap.entrySet());
         sortedEntries.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
-        List<BarEntry> entries = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-
+        List<Map.Entry<String, Integer>> topItems = new ArrayList<>();
+        int maxSales = 0;
         int count = 0;
         for (Map.Entry<String, Integer> entry : sortedEntries) {
-            if (count >= 7) break; // Top 7 items
-            entries.add(new BarEntry(count, entry.getValue()));
-            labels.add(entry.getKey());
+            if (count >= 5) break; // Top 5 items
+            if (count == 0) maxSales = entry.getValue();
+            topItems.add(entry);
             count++;
         }
 
+        topSellingAdapter = new TopSellingAdapter(topItems, maxSales);
+        rvTopSelling.setAdapter(topSellingAdapter);
+    }
+
+    private void updateLineChart() {
+        if (lineChart == null) return;
+
+        List<Entry> entries = new ArrayList<>();
+        List<String> sortedDates = new ArrayList<>(dailySalesMap.keySet());
+        sortedDates.sort(String::compareTo);
+
+        for (int i = 0; i < sortedDates.size(); i++) {
+            Double val = dailySalesMap.get(sortedDates.get(i));
+            entries.add(new Entry(i, val != null ? val.floatValue() : 0f));
+        }
+
         if (entries.isEmpty()) {
-            barChart.clear();
-            barChart.setNoDataText("No sales data for this period");
-            barChart.invalidate();
+            lineChart.clear();
+            lineChart.setNoDataText("No trend data for this period");
+            lineChart.invalidate();
             return;
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, getString(R.string.title_top_selling_items));
-        if (getContext() != null) {
-            dataSet.setColor(ContextCompat.getColor(getContext(), R.color.primary_orange));
-        } else {
-            dataSet.setColor(Color.parseColor("#FF5722"));
-        }
-        dataSet.setValueTextColor(Color.GRAY);
-        dataSet.setValueTextSize(10f);
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.label_sales_trends));
+        dataSet.setColor(Color.parseColor("#b02f00"));
+        dataSet.setLineWidth(2f);
+        dataSet.setCircleColor(Color.parseColor("#b02f00"));
+        dataSet.setDrawValues(false);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setDrawFilled(true);
+        dataSet.setFillColor(Color.parseColor("#b02f00"));
+        dataSet.setFillAlpha(30);
 
-        BarData data = new BarData(dataSet);
-        data.setBarWidth(0.6f);
-
-        barChart.setData(data);
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-        barChart.animateY(800);
-        barChart.invalidate();
+        LineData data = new LineData(dataSet);
+        lineChart.setData(data);
+        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int index = (int) value;
+                if (index >= 0 && index < sortedDates.size()) {
+                    String date = sortedDates.get(index);
+                    return date.substring(date.length() - 2); // Show only day
+                }
+                return "";
+            }
+        });
+        lineChart.animateX(800);
+        lineChart.invalidate();
     }
 
     private void filterList() {
@@ -342,29 +401,72 @@ public class ReportsFragment extends Fragment {
             canvas.drawLine(x, y, 555, y, paint);
             y += 25;
 
-            // Table Content
-            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(10f);
+            // Group employees by department
+            Map<String, List<Employee>> groupedEmployees = new HashMap<>();
+            for (Employee e : filteredEmployees) {
+                String dept = e.getDepartment() != null ? e.getDepartment() : "Unassigned";
+                if (!groupedEmployees.containsKey(dept)) {
+                    groupedEmployees.put(dept, new ArrayList<>());
+                }
+                List<Employee> list = groupedEmployees.get(dept);
+                if (list != null) {
+                    list.add(e);
+                }
+            }
+
+            List<String> departments = new ArrayList<>(groupedEmployees.keySet());
+            departments.sort(String::compareTo);
 
             double totalDeductions = 0;
-            for (Employee e : filteredEmployees) {
-                if (y > 780) {
+            for (String dept : departments) {
+                List<Employee> deptEmployees = groupedEmployees.get(dept);
+                if (deptEmployees == null) continue;
+
+                // Draw Department Header
+                if (y > 750) {
                     pdfDocument.finishPage(page);
                     page = pdfDocument.startPage(pageInfo);
                     canvas = page.getCanvas();
                     y = 50;
                 }
-                double ded = deductionsMap.getOrDefault(e.getId(), 0.0);
-                double rem = e.getSalary() - ded;
-                totalDeductions += ded;
+                
+                headerPaint.setTextSize(14);
+                headerPaint.setColor(Color.parseColor("#b02f00")); // Primary color
+                canvas.drawText("Department: " + dept.toUpperCase(), x, y, headerPaint);
+                y += 10;
+                canvas.drawLine(x, y, x + 150, y, paint); // Sub-underline
+                y += 25;
 
-                canvas.drawText(e.getFullName(), x, y, paint);
-                canvas.drawText(e.getDepartment() != null ? e.getDepartment() : "N/A", x + 200, y, paint);
-                canvas.drawText(String.format(Locale.getDefault(), "%.2f", e.getSalary()), x + 300, y, paint);
-                canvas.drawText(String.format(Locale.getDefault(), "%.2f", ded), x + 400, y, paint);
-                canvas.drawText(String.format(Locale.getDefault(), "%.2f", rem), x + 500, y, paint);
-                y += 20;
+                // Reset for content
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(10f);
+
+                double deptTotal = 0;
+                for (Employee e : deptEmployees) {
+                    if (y > 780) {
+                        pdfDocument.finishPage(page);
+                        page = pdfDocument.startPage(pageInfo);
+                        canvas = page.getCanvas();
+                        y = 50;
+                    }
+                    double ded = deductionsMap.getOrDefault(e.getId(), 0.0);
+                    double rem = e.getSalary() - ded;
+                    deptTotal += ded;
+                    totalDeductions += ded;
+
+                    canvas.drawText(e.getFullName(), x, y, paint);
+                    canvas.drawText(e.getDepartment() != null ? e.getDepartment() : "N/A", x + 200, y, paint);
+                    canvas.drawText(String.format(Locale.getDefault(), "%.2f", e.getSalary()), x + 300, y, paint);
+                    canvas.drawText(String.format(Locale.getDefault(), "%.2f", ded), x + 400, y, paint);
+                    canvas.drawText(String.format(Locale.getDefault(), "%.2f", rem), x + 500, y, paint);
+                    y += 20;
+                }
+
+                // Department Summary
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText("Sub-total " + dept + ": ₱" + String.format(Locale.getDefault(), "%.2f", deptTotal), x + 350, y, paint);
+                y += 35; // Extra spacing between departments
             }
 
             // Summary

@@ -3,6 +3,7 @@ package com.example.canteenmanagementsystem.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.example.canteenmanagementsystem.R;
 import com.example.canteenmanagementsystem.models.Employee;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PayrollAdapter extends RecyclerView.Adapter<PayrollAdapter.ViewHolder> {
@@ -27,22 +29,19 @@ public class PayrollAdapter extends RecyclerView.Adapter<PayrollAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_payroll, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_employee_deduction, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Employee employee = employees.get(position);
-        double deduction = deductions.containsKey(employee.getId()) ? deductions.get(employee.getId()) : 0.0;
-        double salary = employee.getSalary();
-        double remaining = salary - deduction;
+        Double deduction = deductions.get(employee.getId());
+        double amount = deduction != null ? deduction : 0.0;
 
         holder.tvName.setText(employee.getFullName());
-        holder.tvDept.setText(employee.getDepartment());
-        holder.tvDeduction.setText(String.format("₱%.2f", deduction));
-        holder.tvSalary.setText(String.format("₱%.2f", salary));
-        holder.tvRemaining.setText(String.format("₱%.2f", remaining));
+        holder.tvRole.setText(employee.getPosition() != null ? employee.getPosition() : "Staff");
+        holder.tvDeduction.setText(String.format(Locale.getDefault(), "-₱%.2f", amount));
     }
 
     @Override
@@ -51,15 +50,15 @@ public class PayrollAdapter extends RecyclerView.Adapter<PayrollAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvDept, tvDeduction, tvSalary, tvRemaining;
+        TextView tvName, tvRole, tvDeduction;
+        ImageView ivAvatar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tvPayrollName);
-            tvDept = itemView.findViewById(R.id.tvPayrollDept);
-            tvDeduction = itemView.findViewById(R.id.tvPayrollDeduction);
-            tvSalary = itemView.findViewById(R.id.tvPayrollSalary);
-            tvRemaining = itemView.findViewById(R.id.tvPayrollRemaining);
+            tvName = itemView.findViewById(R.id.tvEmployeeName);
+            tvRole = itemView.findViewById(R.id.tvEmployeeRole);
+            tvDeduction = itemView.findViewById(R.id.tvDeductionAmount);
+            ivAvatar = itemView.findViewById(R.id.ivEmployeeAvatar);
         }
     }
 }

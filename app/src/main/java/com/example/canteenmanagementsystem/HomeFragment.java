@@ -12,12 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.canteenmanagementsystem.adapters.RecentActivityAdapter;
 import com.example.canteenmanagementsystem.models.Order;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,8 +34,10 @@ public class HomeFragment extends Fragment {
 
     private TextView tvGreeting, tvCurrentDate, tvTotalEmployees, tvOrdersToday, tvMonthExpense;
     private View notificationBadge;
+    private RecentActivityAdapter recentActivityAdapter;
+    private final List<Order> recentOrders = new ArrayList<>();
     private FirebaseFirestore db;
-    private ListenerRegistration employeesListener, ordersTodayListener, monthOrdersListener, notificationsListener;
+    private ListenerRegistration employeesListener, ordersTodayListener, monthOrdersListener, notificationsListener, recentOrdersListener;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -53,6 +62,11 @@ public class HomeFragment extends Fragment {
         tvOrdersToday = view.findViewById(R.id.tvOrdersTodayCount);
         tvMonthExpense = view.findViewById(R.id.tvMonthExpense);
         notificationBadge = view.findViewById(R.id.notificationBadge);
+        RecyclerView rvRecentActivity = view.findViewById(R.id.rvRecentActivity);
+
+        rvRecentActivity.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recentActivityAdapter = new RecentActivityAdapter(recentOrders);
+        rvRecentActivity.setAdapter(recentActivityAdapter);
 
         setupClickListeners(view);
         updateHeaderInfo();
@@ -102,7 +116,7 @@ public class HomeFragment extends Fragment {
         View tvViewAllActivity = view.findViewById(R.id.tvViewAllActivity);
         if (tvViewAllActivity != null) {
             tvViewAllActivity.setOnClickListener(v -> {
-                 Toast.makeText(requireContext(), "View all activity clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(requireContext(), OrderHistoryActivity.class));
             });
         }
     }
@@ -172,6 +186,22 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
+
+        recentOrdersListener = db.collection("orders")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(5)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || !isAdded()) return;
+                    if (value != null) {
+                        recentOrders.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            Order order = doc.toObject(Order.class);
+                            order.setId(doc.getId());
+                            recentOrders.add(order);
+                        }
+                        recentActivityAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override
@@ -181,5 +211,6 @@ public class HomeFragment extends Fragment {
         if (ordersTodayListener != null) ordersTodayListener.remove();
         if (monthOrdersListener != null) monthOrdersListener.remove();
         if (notificationsListener != null) notificationsListener.remove();
+        if (recentOrdersListener != null) recentOrdersListener.remove();
     }
 }

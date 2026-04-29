@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="6dp"
+    android:layout_marginBottom="12dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="0dp">
+    app:cardElevation="0dp"
+    app:strokeColor="#f1f3f4"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="12dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivMenuItem"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_food"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/ivMenuItem"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_gallery" />
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
 
         <TextView
             android:id="@+id/tvItemName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp"
-            android:text="Item Name"
-            android:textColor="@color/navy_dark"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="#191c1d"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/quantityControls"
-            app:layout_constraintStart_toEndOf="@id/cardImage"
-            app:layout_constraintTop_toTopOf="@id/cardImage" />
+            app:layout_constraintEnd_toStartOf="@+id/quantityContainer"
+            app:layout_constraintStart_toEndOf="@id/ivMenuItem"
+            app:layout_constraintTop_toTopOf="@id/ivMenuItem"
+            tools:text="Classic Burger" />
 
         <TextView
             android:id="@+id/tvItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="₱0.00"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="#b02f00"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tvItemName"
-            app:layout_constraintTop_toBottomOf="@id/tvItemName" />
+            app:layout_constraintTop_toBottomOf="@id/tvItemName"
+            tools:text="₱8.50" />
 
         <LinearLayout
-            android:id="@+id/quantityControls"
+            android:id="@+id/quantityContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_quantity_selector"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -77,13 +75,13 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
-                app:backgroundTint="@color/blue_light"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="8dp"
                 app:icon="@drawable/ic_remove"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
                 app:iconSize="16dp"
-                app:iconTint="@color/semantic_blue"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+                app:iconTint="#b02f00" />
 
             <TextView
                 android:id="@+id/tvQuantity"
@@ -91,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="0"
-                android:textColor="@color/navy_dark"
-                android:textSize="16sp"
+                android:textColor="#191c1d"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
@@ -105,13 +103,13 @@
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
-                app:backgroundTint="@color/green_light"
+                app:backgroundTint="#b02f00"
+                app:cornerRadius="8dp"
                 app:icon="@drawable/ic_add"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
                 app:iconSize="16dp"
-                app:iconTint="@color/primary_green"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+                app:iconTint="@color/white" />
 
         </LinearLayout>
 

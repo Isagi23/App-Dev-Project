@@ -13,6 +13,7 @@ import com.example.canteenmanagementsystem.models.Employee;
 import com.google.android.material.chip.Chip;
 
 import java.util.List;
+import java.util.Locale;
 
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHolder> {
 
@@ -40,9 +41,9 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Employee employee = employees.get(position);
         holder.tvName.setText(employee.getFullName());
-        holder.tvEmployeeId.setText("#" + employee.getEmployeeId());
-        holder.tvPosition.setText(employee.getPosition());
-        holder.chipDepartment.setText(employee.getDepartment());
+        holder.tvEmployeeId.setText("ID: " + employee.getEmployeeId());
+        holder.chipDepartment.setText(employee.getDepartment().toUpperCase());
+        holder.tvSalary.setText(String.format(Locale.getDefault(), "₱%,.0f", employee.getSalary()));
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(employee));
         holder.itemView.setOnLongClickListener(v -> {
@@ -57,15 +58,20 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvEmployeeId, tvPosition;
+        TextView tvName, tvEmployeeId, tvSalary;
         Chip chipDepartment;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvEmployeeName);
             tvEmployeeId = itemView.findViewById(R.id.tvEmployeeId);
-            tvPosition = itemView.findViewById(R.id.tvEmployeePosition);
+            tvSalary = itemView.findViewById(R.id.tvEmployeeSalary);
             chipDepartment = itemView.findViewById(R.id.chipDepartmentBadge);
         }
+    }
+
+    public void updateList(List<Employee> newList) {
+        this.employees = newList;
+        notifyDataSetChanged();
     }
 }

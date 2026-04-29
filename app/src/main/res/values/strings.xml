@@ -22,6 +22,7 @@
     <string name="menu_pos">POS</string>
     <string name="menu_stats">Stats</string>
     <string name="menu_staff">Staff</string>
+    <string name="title_reports">Reports</string>
 
     <!-- Quick Action Strings -->
     <string name="action_record_order">Record Order</string>
@@ -51,7 +52,7 @@
     <string name="department_all">All</string>
     <string name="department_field">Field</string>
     <string name="department_packing">Packing</string>
-    <string name="department_maint">Maint.</string>
+    <string name="department_maint">Maintenance</string>
     <string name="department_admin">Admin</string>
     <string name="currency_placeholder">₱%1$.2f</string>
     <string name="content_desc_prev">Previous Month</string>
@@ -74,7 +75,8 @@
     <string name="hint_password">••••••••</string>
     <string name="btn_send_reset_link">Send Reset Link</string>
     <string name="label_back_to_login">Back to Login</string>
-    <string name="label_canteen_manager">CanteenManager</string>
+    <string name="label_canteen_manager">Canteen Admin</string>
+    <string name="label_units">%1$d units</string>
 
     <!-- Register Strings -->
     <string name="title_register">Create Account</string>
@@ -86,7 +88,7 @@
     <string name="label_login">Login</string>
 
     <!-- Dashboard Strings -->
-    <string name="title_canteen_admin">Canteen Admin</string>
+    <string name="title_canteen_admin">Home</string>
     <string name="label_todays_sales">TODAY\'S SALES</string>
     <string name="label_active_orders">Active Orders</string>
     <string name="label_total_staff">Total Staff</string>
@@ -99,4 +101,70 @@
     <string name="label_employees_count_fmt">%1$d Employees</string>
     <string name="label_employee_count_fmt_single">%1$d Employee</string>
     <string name="label_position">Position</string>
+    <string name="title_staff_mgmt">Workers Management</string>
+    <string name="hint_search_staff">Search by name or ID...</string>
+
+    <!-- Profile Redesign Strings -->
+    <string name="label_account">Account</string>
+    <string name="label_personal_info">Personal Information</string>
+    <string name="label_security_password">Security &amp; Password</string>
+    <string name="label_notifications_settings">Notification Settings</string>
+    <string name="label_support_about">Support &amp; About</string>
+    <string name="label_help_center">Help Center</string>
+    <string name="label_terms_service">Terms of Service</string>
+    <string name="label_privacy_policy">Privacy Policy</string>
+    <string name="label_canteen_manager_role">Canteen Manager</string>
+    <string name="btn_edit_profile_label">Edit Profile</string>
+    <string name="btn_logout_label">Log Out</string>
+
+    <!-- Security & Password Strings -->
+    <string name="title_account_support">Account &amp; Support</string>
+    <string name="label_staff">STAFF</string>
+    <string name="desc_security_password">Manage your access preferences.</string>
+    <string name="label_update_password">Update Password</string>
+    <string name="label_current_password">Current Password</string>
+    <string name="label_new_password">New Password</string>
+    <string name="label_confirm_new_password">Confirm New Password</string>
+    <string name="hint_new_password">At least 8 characters</string>
+    <string name="hint_confirm_password">Repeat new password</string>
+    <string name="msg_password_security">Ensure your password uses a mix of letters, numbers, and symbols for better security.</string>
+    <string name="btn_update_password">Update Password</string>
+
+    <!-- Personal Information Strings -->
+    <string name="title_personal_info">Personal Information</string>
+    <string name="desc_personal_info">Update your account details and profile identity.</string>
+    <string name="label_identity_details">Identity Details</string>
+    <string name="label_admin_id">Admin ID</string>
+    <string name="label_contact_info">Contact Info</string>
+    <string name="label_phone_number">Phone Number</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="btn_discard">Discard</string>
+    <string name="label_active_profile">Active Profile</string>
+    <string name="label_last_updated">Last updated: %1$s</string>
+    <string name="label_edit_photo">Edit Photo</string>
+    <string name="desc_edit_photo_rec">Recommended: Square image, max 2MB</string>
+
+    <!-- Notification Settings Strings -->
+    <string name="title_notification_settings">Notification Settings</string>
+    <string name="desc_notification_settings">Manage how you receive alerts and updates.</string>
+    <string name="label_order_notifications">Order Notifications</string>
+    <string name="desc_order_notifications">Get notified when a new order is recorded.</string>
+    <string name="label_staff_alerts">Staff Management Alerts</string>
+    <string name="desc_staff_alerts">Alerts about new employee registration or changes.</string>
+    <string name="label_report_alerts">Report Notifications</string>
+    <string name="desc_report_alerts">Get notified when monthly reports are generated.</string>
+    <string name="label_system_updates">System Updates</string>
+    <string name="desc_system_updates">Important announcements about the app.</string>
+
+    <string name="title_financial_analytics">Financial Analytics</string>
+    <string name="label_reporting_period">Reporting period: %1$s</string>
+    <string name="label_sales_trends">Sales Trends</string>
+    <string name="label_top_selling_items">Top Selling Items</string>
+    <string name="label_monthly_deductions">Monthly Employee Deductions</string>
+    <string name="label_order_id">Order #%1$s</string>
+    <string name="status_paid">PAID</string>
+    <string name="label_current_order">Current Order</string>
+    <string name="label_confirm_order">Confirm Order</string>
+    <string name="label_total_amount_fmt">Total: ₱%1$.2f</string>
+    <string name="title_records_order">Records Order</string>
 </resources>
