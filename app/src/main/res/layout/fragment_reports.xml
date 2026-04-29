@@ -157,7 +157,7 @@
                             style="@style/Widget.MaterialComponents.Chip.Choice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/department_field" />
+                            android:text="@string/department_harvester" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chipPacking"
@@ -167,11 +167,18 @@
                             android:text="@string/department_packing" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipMaint"
+                            android:id="@+id/chipUtility"
                             style="@style/Widget.MaterialComponents.Chip.Choice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/department_maint" />
+                            android:text="@string/department_utility" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEngineering"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/department_engineering" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chipAdmin"
@@ -304,54 +311,6 @@
                         tools:listitem="@layout/item_employee_deduction" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Summary Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:cardBackgroundColor="#111d23"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvLabelTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/report_grand_total"
-                            android:textColor="#bbc8d0"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvTotalEmployees"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="0 Employees"
-                            android:textColor="#bbc8d0"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvLabelTotal" />
-
-                        <TextView
-                            android:id="@+id/tvGrandTotalDeductions"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="₱0.00"
-                            android:textColor="@color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Export Action -->
                 <com.google.android.material.button.MaterialButton

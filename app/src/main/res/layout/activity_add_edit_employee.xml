@@ -13,16 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:background="@drawable/bg_header_gradient"
-        android:padding="24dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/label_back"
             android:src="@drawable/ic_back"
-            android:rotation="180"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
@@ -31,7 +32,8 @@
             android:id="@+id/tvHeaderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
             android:text="Employee Details"
             android:textColor="@color/white"
             android:textSize="28sp"
@@ -130,23 +132,6 @@
                             android:paddingHorizontal="12dp" />
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:hint="Position"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusTopStart="12dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPosition"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -177,7 +162,7 @@
                 android:text="Save Employee"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/navy_dark"
+                app:backgroundTint="@color/color_primary"
                 app:cornerRadius="32dp"
                 app:layout_constraintBottom_toBottomOf="parent" />
 

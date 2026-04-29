@@ -41,7 +41,7 @@ public class RecordOrderActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String selectedEmployeeId;
     private String selectedEmployeeName;
-    private String currentDepartmentFilter = "Field";
+    private String currentDepartmentFilter = "Packing House";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,6 +210,7 @@ public class RecordOrderActivity extends AppCompatActivity {
             String notifTitle = "New Order: " + selectedEmployeeName;
             String notifMessage = "Purchased items for " + String.format(Locale.getDefault(), "₱%.2f", finalTotal);
             Notification notification = new Notification(null, notifTitle, notifMessage, "ORDER");
+            notification.setTimestamp(new Date()); // Explicitly set current date
             db.collection("notifications").add(notification);
 
             progressBar.setVisibility(View.GONE);

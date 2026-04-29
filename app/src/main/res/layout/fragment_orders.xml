@@ -105,23 +105,23 @@
                         app:singleSelection="true">
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipField"
+                            android:id="@+id/chipPacking"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Field"
+                            android:text="@string/department_packing"
                             app:chipBackgroundColor="@color/color_primary"
                             android:textColor="@color/white"
                             app:chipCornerRadius="20dp"
                             app:chipStrokeWidth="0dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPacking"
+                            android:id="@+id/chipHarvester"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Packing"
+                            android:text="@string/department_harvester"
                             app:chipBackgroundColor="@color/white"
                             android:textColor="#546067"
                             app:chipCornerRadius="20dp"
@@ -129,11 +129,23 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipMaintenance"
+                            android:id="@+id/chipUtility"
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/department_maint"
+                            android:text="@string/department_utility"
+                            app:chipBackgroundColor="@color/white"
+                            android:textColor="#546067"
+                            app:chipCornerRadius="20dp"
+                            app:chipStrokeColor="#e1e3e4"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEngineering"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/department_engineering"
                             app:chipBackgroundColor="@color/white"
                             android:textColor="#546067"
                             app:chipCornerRadius="20dp"

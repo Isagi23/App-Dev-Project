@@ -336,6 +336,13 @@ public class MenuItemActivity extends AppCompatActivity implements MenuItemAdapt
         if (item == null) {
             MenuItem newItem = new MenuItem(null, name, price, imageUrl);
             menuRef.add(newItem).addOnSuccessListener(documentReference -> {
+                // Create notification
+                com.example.canteenmanagementsystem.models.Notification notification = 
+                    new com.example.canteenmanagementsystem.models.Notification(null, "New Menu Item", 
+                    name + " is now available for " + String.format(java.util.Locale.getDefault(), "₱%.2f", price), "SYSTEM");
+                notification.setTimestamp(new java.util.Date());
+                db.collection("notifications").add(notification);
+
                 if (dialogProgressBar != null) dialogProgressBar.setVisibility(View.GONE);
                 Toast.makeText(this, "Item added", Toast.LENGTH_SHORT).show();
                 if (dialog != null) dialog.dismiss();

@@ -191,8 +191,14 @@ public class HomeFragment extends Fragment {
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(5)
                 .addSnapshotListener((value, error) -> {
-                    if (error != null || !isAdded()) return;
-                    if (value != null) {
+                    if (error != null) {
+                        // Fallback if index is missing
+                        if (error.getMessage() != null && error.getMessage().contains("FAILED_PRECONDITION")) {
+                            loadRecentOrdersFallback();
+                        }
+                        return;
+                    }
+                    if (value != null && isAdded()) {
                         recentOrders.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             Order order = doc.toObject(Order.class);
@@ -202,6 +208,28 @@ public class HomeFragment extends Fragment {
                         recentActivityAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    private void loadRecentOrdersFallback() {
+        db.collection("orders").limit(50).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!isAdded()) return;
+            recentOrders.clear();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Order order = doc.toObject(Order.class);
+                order.setId(doc.getId());
+                recentOrders.add(order);
+            }
+            // Sort locally
+            recentOrders.sort((o1, o2) -> {
+                if (o1.getTimestamp() == null || o2.getTimestamp() == null) return 0;
+                return o2.getTimestamp().compareTo(o1.getTimestamp());
+            });
+            // Keep only top 5
+            if (recentOrders.size() > 5) {
+                recentOrders.subList(5, recentOrders.size()).clear();
+            }
+            recentActivityAdapter.notifyDataSetChanged();
+        });
     }
 
     @Override

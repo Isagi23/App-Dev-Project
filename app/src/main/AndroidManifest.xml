@@ -40,6 +40,8 @@
         <activity android:name=".PersonalInfoActivity" />
         <activity android:name=".NotificationSettingsActivity" />
         <activity android:name=".NotificationsActivity" />
+        <activity android:name=".TermsOfServiceActivity" />
+        <activity android:name=".PrivacyPolicyActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

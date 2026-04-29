@@ -69,7 +69,7 @@ import java.util.concurrent.Executors;
 
 public class ReportsFragment extends Fragment {
 
-    private TextView tvSelectedMonth, tvTotalEmployees, tvGrandTotalDeductions, tvHeaderSubtitle;
+    private TextView tvSelectedMonth, tvHeaderSubtitle;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerView rvPayrollReport, rvTopSelling;
     private LineChart lineChart;
@@ -103,8 +103,6 @@ public class ReportsFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         tvSelectedMonth = view.findViewById(R.id.tvSelectedMonth);
-        tvTotalEmployees = view.findViewById(R.id.tvTotalEmployees);
-        tvGrandTotalDeductions = view.findViewById(R.id.tvGrandTotalDeductions);
         tvHeaderSubtitle = view.findViewById(R.id.tvHeaderSubtitle);
         rvPayrollReport = view.findViewById(R.id.rvPayrollReport);
         rvTopSelling = view.findViewById(R.id.rvTopSelling);
@@ -336,16 +334,12 @@ public class ReportsFragment extends Fragment {
 
     private void filterList() {
         filteredEmployees.clear();
-        double grandTotal = 0;
         for (Employee e : allEmployees) {
             if (selectedDepartment.equals("All") || (e.getDepartment() != null && e.getDepartment().equals(selectedDepartment))) {
                 filteredEmployees.add(e);
-                grandTotal += deductionsMap.getOrDefault(e.getId(), 0.0);
             }
         }
         adapter.notifyDataSetChanged();
-        tvTotalEmployees.setText(getString(R.string.report_total_employees, filteredEmployees.size()));
-        tvGrandTotalDeductions.setText(String.format(Locale.getDefault(), "₱%.2f", grandTotal));
     }
 
     private void exportToPdf() {
@@ -417,7 +411,6 @@ public class ReportsFragment extends Fragment {
             List<String> departments = new ArrayList<>(groupedEmployees.keySet());
             departments.sort(String::compareTo);
 
-            double totalDeductions = 0;
             for (String dept : departments) {
                 List<Employee> deptEmployees = groupedEmployees.get(dept);
                 if (deptEmployees == null) continue;
@@ -453,7 +446,6 @@ public class ReportsFragment extends Fragment {
                     double ded = deductionsMap.getOrDefault(e.getId(), 0.0);
                     double rem = e.getSalary() - ded;
                     deptTotal += ded;
-                    totalDeductions += ded;
 
                     canvas.drawText(e.getFullName(), x, y, paint);
                     canvas.drawText(e.getDepartment() != null ? e.getDepartment() : "N/A", x + 200, y, paint);
@@ -468,15 +460,6 @@ public class ReportsFragment extends Fragment {
                 canvas.drawText("Sub-total " + dept + ": ₱" + String.format(Locale.getDefault(), "%.2f", deptTotal), x + 350, y, paint);
                 y += 35; // Extra spacing between departments
             }
-
-            // Summary
-            y += 20;
-            canvas.drawLine(x, y, 555, y, paint);
-            y += 25;
-            headerPaint.setTextSize(14);
-            canvas.drawText("Total Employees: " + filteredEmployees.size(), x, y, headerPaint);
-            y += 25;
-            canvas.drawText("Grand Total Expenses: " + String.format(Locale.getDefault(), "₱%.2f", totalDeductions), x, y, headerPaint);
 
             // Footer
             paint.setTextSize(10);

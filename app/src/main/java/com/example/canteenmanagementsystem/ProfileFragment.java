@@ -90,6 +90,12 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.btnNotificationSettings).setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), NotificationSettingsActivity.class));
         });
+        view.findViewById(R.id.btnTermsOfService).setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), TermsOfServiceActivity.class));
+        });
+        view.findViewById(R.id.btnPrivacyPolicy).setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), PrivacyPolicyActivity.class));
+        });
 
         View btnNotifications = view.findViewById(R.id.btnNotifications);
         if (btnNotifications != null) {

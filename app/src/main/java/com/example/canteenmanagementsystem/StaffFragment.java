@@ -114,7 +114,8 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
                 Chip chip = group.findViewById(checkedId);
                 if (chip != null) {
                     String department = chip.getText().toString();
-                    currentDepartmentFilter = department.equals("All") ? null : department;
+                    String allLabel = getString(R.string.department_all);
+                    currentDepartmentFilter = department.equalsIgnoreCase(allLabel) ? null : department;
                 }
             }
             loadEmployees();

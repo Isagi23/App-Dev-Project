@@ -17,14 +17,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class AddEditEmployeeActivity extends AppCompatActivity {
 
-    private TextInputEditText etEmployeeId, etFullName, etPosition, etSalary;
+    private TextInputEditText etEmployeeId, etFullName, etSalary;
     private Spinner spinnerDepartment;
     private Button btnSave;
     private android.widget.ProgressBar progressBar;
     private FirebaseFirestore db;
     private CollectionReference employeesRef;
     private String documentId;
-    private final String[] departments = {"Field", "Packing", "Maintenance", "Harvest"};
+    private final String[] departments = {"Packing House", "Harvester", "Utility", "Admin", "Engineering"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
 
         etEmployeeId = findViewById(R.id.etEmployeeId);
         etFullName = findViewById(R.id.etFullName);
-        etPosition = findViewById(R.id.etPosition);
         etSalary = findViewById(R.id.etSalary);
         spinnerDepartment = findViewById(R.id.spinnerDepartment);
         btnSave = findViewById(R.id.btnSaveEmployee);
@@ -62,7 +61,6 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
             if (employee != null) {
                 etEmployeeId.setText(employee.getEmployeeId());
                 etFullName.setText(employee.getFullName());
-                etPosition.setText(employee.getPosition());
                 etSalary.setText(String.valueOf(employee.getSalary()));
                 for (int i = 0; i < departments.length; i++) {
                     if (departments[i].equals(employee.getDepartment())) {
@@ -81,7 +79,6 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
         }
         String empId = etEmployeeId.getText().toString().trim();
         String name = etFullName.getText().toString().trim();
-        String pos = etPosition.getText().toString().trim();
         String salaryStr = etSalary.getText().toString().trim();
         String dept = spinnerDepartment.getSelectedItem().toString();
 
@@ -93,10 +90,6 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(name)) {
             etFullName.setError("Full name is required");
-            hasError = true;
-        }
-        if (TextUtils.isEmpty(pos)) {
-            etPosition.setError("Position is required");
             hasError = true;
         }
         if (TextUtils.isEmpty(salaryStr)) {
@@ -138,12 +131,20 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
                 btnSave.setText("Save Employee");
                 if (progressBar != null) progressBar.setVisibility(android.view.View.GONE);
             } else {
-                Employee employee = new Employee(documentId, empId, name, dept, pos, salary);
+                Employee employee = new Employee(documentId, empId, name, dept, "", salary);
                 if (documentId == null) {
                     employeesRef.add(employee).addOnSuccessListener(documentReference -> {
                         // Set the ID field to the document ID
                         String newId = documentReference.getId();
                         documentReference.update("id", newId);
+                        
+                        // Create notification
+                        com.example.canteenmanagementsystem.models.Notification notification = 
+                            new com.example.canteenmanagementsystem.models.Notification(null, "New Employee Added", 
+                            name + " has been added to the " + dept + " department.", "STAFF");
+                        notification.setTimestamp(new java.util.Date());
+                        db.collection("notifications").add(notification);
+
                         if (progressBar != null) progressBar.setVisibility(android.view.View.GONE);
                         Toast.makeText(this, "Employee added", Toast.LENGTH_SHORT).show();
                         finish();
