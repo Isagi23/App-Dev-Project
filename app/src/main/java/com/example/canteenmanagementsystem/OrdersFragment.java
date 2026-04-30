@@ -47,6 +47,8 @@ public class OrdersFragment extends Fragment {
     private TextView tvSummaryItems, tvSummaryTotal;
     private ChipGroup chipGroupCategories;
     private ProgressBar progressBar;
+    private View notificationBadge;
+    private com.google.firebase.firestore.ListenerRegistration notificationsListener;
 
     private FirebaseFirestore db;
     private final List<Employee> allEmployees = new ArrayList<>();
@@ -88,8 +90,17 @@ public class OrdersFragment extends Fragment {
 
         loadEmployees();
         loadMenuItems();
+        startNotificationsListener();
 
         btnSaveOrder.setOnClickListener(v -> saveOrder());
+
+        notificationBadge = view.findViewById(R.id.notificationBadge);
+        View btnNotifications = view.findViewById(R.id.btnNotifications);
+        if (btnNotifications != null) {
+            btnNotifications.setOnClickListener(v -> {
+                startActivity(new android.content.Intent(requireContext(), NotificationsActivity.class));
+            });
+        }
 
         view.findViewById(R.id.btnViewHistory).setOnClickListener(v -> {
             startActivity(new android.content.Intent(requireContext(), OrderHistoryActivity.class));
@@ -98,15 +109,38 @@ public class OrdersFragment extends Fragment {
         // Fix: Hide keyboard and clear focus when touching outside
         view.findViewById(R.id.rootLayout).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                View focusedView = getActivity().getCurrentFocus();
-                if (focusedView != null) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
-                    focusedView.clearFocus();
+                if (getActivity() != null) {
+                    View focusedView = getActivity().getCurrentFocus();
+                    if (focusedView != null) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                        if (imm != null) {
+                            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+                        }
+                        focusedView.clearFocus();
+                    }
                 }
             }
             return false;
         });
+    }
+
+    private void startNotificationsListener() {
+        notificationsListener = db.collection("notifications")
+                .whereEqualTo("read", false)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || !isAdded()) return;
+                    if (value != null && notificationBadge != null) {
+                        notificationBadge.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (notificationsListener != null) {
+            notificationsListener.remove();
+        }
     }
 
     private void setupCategoryFilter() {
@@ -248,6 +282,12 @@ public class OrdersFragment extends Fragment {
                     if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
                     db.collection("orders").add(order).addOnSuccessListener(documentReference -> {
                         if (!isAdded()) return;
+                        
+                        // Create notification
+                        com.example.canteenmanagementsystem.utils.NotificationHelper.createNotification(requireContext(), 
+                            "New Order: " + selectedEmployee.getFullName(), 
+                            "Purchased items for " + String.format(Locale.getDefault(), "₱%.2f", finalTotal), "ORDER");
+
                         if (progressBar != null) progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Order saved", Toast.LENGTH_SHORT).show();
                         showRunningMonthlyTotal(selectedEmployee.getId(), selectedEmployee.getFullName(), sdfMonth.format(now));

@@ -209,7 +209,12 @@ public class StaffFragment extends Fragment implements EmployeeAdapter.OnItemCli
                         return;
                     }
                     employeesRef.document(employee.getId()).delete()
-                            .addOnSuccessListener(aVoid -> Toast.makeText(requireContext(), "Employee deleted", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(requireContext(), "Employee deleted", Toast.LENGTH_SHORT).show();
+                                com.example.canteenmanagementsystem.utils.NotificationHelper.createNotification(requireContext(), 
+                                    "Employee Removed", 
+                                    employee.getFullName() + " has been removed from the system.", "STAFF");
+                            })
                             .addOnFailureListener(e -> Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                 })
                 .setNegativeButton("Cancel", null)

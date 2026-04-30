@@ -139,11 +139,9 @@ public class AddEditEmployeeActivity extends AppCompatActivity {
                         documentReference.update("id", newId);
                         
                         // Create notification
-                        com.example.canteenmanagementsystem.models.Notification notification = 
-                            new com.example.canteenmanagementsystem.models.Notification(null, "New Employee Added", 
+                        com.example.canteenmanagementsystem.utils.NotificationHelper.createNotification(this, 
+                            "New Employee Added", 
                             name + " has been added to the " + dept + " department.", "STAFF");
-                        notification.setTimestamp(new java.util.Date());
-                        db.collection("notifications").add(notification);
 
                         if (progressBar != null) progressBar.setVisibility(android.view.View.GONE);
                         Toast.makeText(this, "Employee added", Toast.LENGTH_SHORT).show();

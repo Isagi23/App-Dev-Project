@@ -83,6 +83,8 @@ public class ReportsFragment extends Fragment {
     private String selectedDepartment = "All";
 
     private FirebaseFirestore db;
+    private com.google.firebase.firestore.ListenerRegistration notificationsListener;
+    private View notificationBadge;
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
     private SimpleDateFormat dbMonthFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
@@ -112,6 +114,7 @@ public class ReportsFragment extends Fragment {
         ImageButton btnNext = view.findViewById(R.id.btnNextMonth);
         Button btnExport = view.findViewById(R.id.btnExportPdf);
         ImageButton btnNotifications = view.findViewById(R.id.btnNotifications);
+        notificationBadge = view.findViewById(R.id.notificationBadge);
 
         btnNotifications.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), NotificationsActivity.class));
@@ -129,6 +132,7 @@ public class ReportsFragment extends Fragment {
         updateMonthDisplay();
         setupCharts();
         loadData();
+        startNotificationsListener();
 
         btnPrev.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
@@ -163,6 +167,25 @@ public class ReportsFragment extends Fragment {
                 exportToPdf();
             }
         });
+    }
+
+    private void startNotificationsListener() {
+        notificationsListener = db.collection("notifications")
+                .whereEqualTo("read", false)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || !isAdded()) return;
+                    if (value != null && notificationBadge != null) {
+                        notificationBadge.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (notificationsListener != null) {
+            notificationsListener.remove();
+        }
     }
 
     private void updateMonthDisplay() {
@@ -236,12 +259,15 @@ public class ReportsFragment extends Fragment {
                         Order order = doc.toObject(Order.class);
                         String empId = order.getEmployeeId();
                         double amount = order.getTotalAmount();
-                        deductionsMap.put(empId, deductionsMap.getOrDefault(empId, 0.0) + amount);
+                        
+                        Double currentDeduction = deductionsMap.get(empId);
+                        deductionsMap.put(empId, (currentDeduction != null ? currentDeduction : 0.0) + amount);
 
                         // Collect item sales data
                         if (order.getItemNames() != null) {
                             for (String itemName : order.getItemNames()) {
-                                itemSalesMap.put(itemName, itemSalesMap.getOrDefault(itemName, 0) + 1);
+                                Integer currentSales = itemSalesMap.get(itemName);
+                                itemSalesMap.put(itemName, (currentSales != null ? currentSales : 0) + 1);
                             }
                         }
 
@@ -443,7 +469,8 @@ public class ReportsFragment extends Fragment {
                         canvas = page.getCanvas();
                         y = 50;
                     }
-                    double ded = deductionsMap.getOrDefault(e.getId(), 0.0);
+                    Double deductionVal = deductionsMap.get(e.getId());
+                    double ded = (deductionVal != null) ? deductionVal : 0.0;
                     double rem = e.getSalary() - ded;
                     deptTotal += ded;
 

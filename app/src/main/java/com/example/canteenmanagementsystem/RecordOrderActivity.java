@@ -216,9 +216,7 @@ public class RecordOrderActivity extends AppCompatActivity {
             // Create notification
             String notifTitle = "New Order: " + selectedEmployeeName;
             String notifMessage = "Purchased items for " + String.format(Locale.getDefault(), "₱%.2f", finalTotal);
-            Notification notification = new Notification(null, notifTitle, notifMessage, "ORDER");
-            notification.setTimestamp(new Date()); // Explicitly set current date
-            db.collection("notifications").add(notification);
+            com.example.canteenmanagementsystem.utils.NotificationHelper.createNotification(this, notifTitle, notifMessage, "ORDER");
 
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Order saved successfully", Toast.LENGTH_SHORT).show();
